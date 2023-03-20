@@ -1,4 +1,7 @@
 import pickle as pk
+import os
+import csv
+import shutil
 from dataclasses import dataclass
 
 import constants
@@ -26,26 +29,69 @@ class ChannelData:
     channel_values: list[float]
 
 
-def read_file(file_path: str, channels: list[str]):
+@dataclass
+class TrialData:
+    trial_number: int
+    data: list[ChannelData]
+
+
+def read_file(file_name: str, channels: list[str]):
     try:
-        channel_data_list = []
+        trial_list: list[TrialData] = []
+        file_path = os.path.join(".", constants.USER_FILE_DIRECTORY_NAME, file_name)
         file_data = pk.load(open(file_path, "rb"), encoding="latin1")
-        for trial_content in file_data["data"]:
+        for index, trial_content in enumerate(file_data["data"]):
+            trial = TrialData(index, [])
             for channel in channels:
                 channel_index = constants.CHANNEL_INDEXES[channel]
-                channel_data_list.append(ChannelData(channel, trial_content[channel_index]))
-        return channel_data_list
+                trial.data.append(ChannelData(channel, trial_content[channel_index]))
+            trial_list.append(trial)
+        return trial_list
     except KeyError:
         print("Error while processing for one of the given channels")
     except Exception as ex:
         raise ex
 
 
+def get_file_names():
+    return os.listdir(os.path.join(".", constants.USER_FILE_DIRECTORY_NAME))
+
+
+def write_user_files(user: str, trial_data_list: list[TrialData]):
+    user_dir = os.path.join(".", constants.USER_OUTPUT_DIRECTORY_NAME, user)
+    os.mkdir(user_dir)
+    for index, trial in enumerate(trial_data_list):
+        file_name = os.path.join(user_dir, f"trial_{str(index + 1)}.csv")
+        write_data_to_file(file_name, trial)
+
+
+def write_data_to_file(file_path: str, trial_data: TrialData):
+    rows = []
+    for channel_data in trial_data.data:
+        row = [channel_data.channel_name] + list(map(lambda x: str(x), channel_data.channel_values))
+        rows.append(row)
+
+    f = open(file_path, 'w', newline='')
+    writer = csv.writer(f)
+
+    # writing by columns is done by transposing the rows and treating the results as columns
+    for column in zip(*rows):
+        writer.writerow(column)
+    f.close()
+
+
+def clear_output_file():
+    output_file_path = os.path.join(".", constants.USER_OUTPUT_DIRECTORY_NAME)
+    shutil.rmtree(output_file_path)
+    os.mkdir(output_file_path)
+
+
 def main():
-    for channel_data in read_file("s01.dat", ["Fp1"]):
-        print(channel_data.channel_name)
-        for value in channel_data.channel_values:
-            print(value)
+    clear_output_file()
+    for file in get_file_names():
+        trials = read_file(file, constants.CHANNEL_INDEXES.keys())
+        write_user_files(file.replace(".dat", ""), trials)
+    print("Process finished successfully")
 
 
 if __name__ == '__main__':
