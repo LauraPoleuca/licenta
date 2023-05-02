@@ -1,14 +1,17 @@
 import sqlite3
 import os
 
-import database_constants as dbc
+import utils.database_constants as dbc
+from data_access.models.user import User
+
 
 class DataAccessService:
-    
+
     db_connection: sqlite3.Connection
 
     def __init__(self) -> None:
         self.db_connection = sqlite3.connect(dbc.DATABASE_PATH)
+        self.db_connection.execute(dbc.FOREIGN_KEYS_ENABLED)
 
     def initialize_database(self):
         cursor = self.db_connection.cursor()
@@ -23,11 +26,16 @@ class DataAccessService:
         cursor = cursor.executemany(insert_script, entities_data)
         self.db_connection.commit()
         cursor.close()
-    
+
+    def retrieve_users(self):
+        cursor = self.db_connection.cursor()
+        cursor.execute(dbc.SELECT_USERS)
+        entity_tuples = cursor.fetchall()
+        return list(map(lambda entity_tuple: User.from_entity_tuple(entity_tuple), entity_tuples))
+
     def clear_database(self):
         self.db_connection.close()
         os.remove(dbc.DATABASE_PATH)
-    
+
     def __get_entities_tuple(self, entities):
-        return list(map(lambda x : x.get_tuple(), entities))
-    
+        return list(map(lambda x: x.get_tuple(), entities))

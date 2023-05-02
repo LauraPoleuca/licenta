@@ -1,0 +1,27 @@
+Notes:
+    - use models everywhere
+    - no magic bs
+
+Utils module:
+    - common methods -> helpers
+    - constant files -> database, signal, extraction
+
+Raw data extraction module
+    - needs modularization
+    - extract common methods in utils 
+
+Graphing module
+    - will be used in tandem with raw extraction module 
+    - simple signal graphing abstractizations
+
+Data access module:
+    - define models 
+    - ensure data manipulation for the desired features
+
+Feature module:
+    - methods for converting signals into features
+    - that s about it really. 
+
+Nice to have:
+    - types
+    - comments
