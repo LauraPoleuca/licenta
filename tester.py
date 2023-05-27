@@ -9,7 +9,7 @@ import utils.database_constants as dbc
 
 def test_signal_filter_and_graph():
     eeg_signal = get_signal("s01", "trial_1.csv", "Fp1")
-    filtered_signal = filter(eeg_signal, ALPHA_BAND_TYPE)
+    filtered_signal = filter(eeg_signal, GAMMA_BAND_TYPE)
     plot_signal(filtered_signal)
 
 
@@ -25,9 +25,9 @@ def test_data_insertion():
 
 def main():
     # process_raw_data()
-    # test_signal_filter_and_graph()
+    #test_signal_filter_and_graph()
     test_data_insertion()
-    pass
+    #pass
 
 
 if __name__ == "__main__":

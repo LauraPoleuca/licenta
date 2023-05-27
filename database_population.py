@@ -18,7 +18,7 @@ def insert_trials(data_access_service: DataAccessService):
 
 
 def insert_recordings(data_access_service: DataAccessService):
-    recordings = get_recordings(["Fp1", "AF3"])
+    recordings = get_recordings(["Fp1"])
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
 
 

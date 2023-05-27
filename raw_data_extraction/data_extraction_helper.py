@@ -16,7 +16,7 @@ def get_user_input_files():
     return os.listdir(get_relative_file_path(USER_FILE_DIRECTORY_NAME))
 
 #this is gonna take a while
-#and suck a lot\
+
 def reset_output_file():
     output_file_path = get_relative_file_path(USER_OUTPUT_DIRECTORY_NAME)
     shutil.rmtree(output_file_path)

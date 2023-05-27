@@ -16,5 +16,13 @@ def get_user_trials(file_name: str):
 
 
 def get_user_trial_quadrant(valence: float, arousal: float):
-    #TODO: add quadrant logic here, whatever it is. 
-    return 3
+    threshold_value = 4.5
+    is_valence_high = valence > threshold_value
+    is_arousal_high = arousal > threshold_value
+    if is_valence_high and is_valence_high:
+        return 1
+    if not is_valence_high and is_arousal_high:
+        return 2
+    if not is_valence_high and not is_arousal_high:
+        return 3
+    return 4
