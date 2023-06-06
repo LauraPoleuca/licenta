@@ -27,11 +27,11 @@ class DataAccessService:
         self.db_connection.commit()
         cursor.close()
 
-    def retrieve_users(self):
+    def retrieve_range_data(self, select_script, entity_class):
         cursor = self.db_connection.cursor()
-        cursor.execute(dbc.SELECT_USERS)
+        cursor.execute(select_script)
         entity_tuples = cursor.fetchall()
-        return list(map(lambda entity_tuple: User.from_entity_tuple(entity_tuple), entity_tuples))
+        return list(map(lambda entity_tuple: entity_class.from_entity_tuple(entity_tuple), entity_tuples))
 
     def clear_database(self):
         self.db_connection.close()
