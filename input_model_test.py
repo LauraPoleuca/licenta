@@ -1,3 +1,6 @@
+from typing import List
+
+
 class InputModel:
 
     # ca si chestie, mi am dat seama ca faptul ca probabilitatea
@@ -11,3 +14,7 @@ class InputModel:
         self.rms: float = rms
         self.corr: float = corr
         self.outcome: str = outcome
+
+    @classmethod
+    def from_list(cls, feature_list: List, outcome: str):
+        return cls(feature_list[0], feature_list[1], feature_list[2], feature_list[3], feature_list[4], outcome)

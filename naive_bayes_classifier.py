@@ -47,7 +47,7 @@ class NaiveBayesClassifier:
         """
         Initialize a frequency table for a feature, which is a 2d matrix with the number of classes and bins  
         """
-        return np.zeros((len(self.classes), self.discretizer.bin_count))
+        return np.zeros((len(self.classes), self.discretizer.bin_count)).astype(int)
 
     def __initialize_frequency_dict(self) -> dict:
         """

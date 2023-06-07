@@ -5,3 +5,4 @@
 - [ ] Use typing in all methods
 - [ ] Maybe set bin count to be specific per property, not per discretizer.
 - [ ] Create class index method instead of 0 else 1
+- [ ] Order methods in classes (private, protected, public)
