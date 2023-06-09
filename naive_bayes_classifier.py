@@ -1,3 +1,4 @@
+import json
 import numpy as np
 
 from typing import List
@@ -5,6 +6,7 @@ from copy import deepcopy
 from input_model_test import InputModel
 
 from discretizer import Discretizer
+from utils.data_extraction_constants import TRAINED_MODEL_FILE
 
 
 class NaiveBayesClassifier:
@@ -79,6 +81,9 @@ class NaiveBayesClassifier:
                 self.train_data[feature_name][class_index, bin_index] += 1
         return self.train_data
 
+    def __get_classification_index(self, class_name: str):
+        return 0 if class_name == "happy" else 1
+
     def __get_class_likelyhood(self, features_model: InputModel, class_name: str):
         """
         Calculates the likelyhood of a given class to occur for a given features model.
@@ -87,7 +92,7 @@ class NaiveBayesClassifier:
             P(x|class) = number of cases in which x resulted in the class / number of times in which the class occurs
         NOTE: temporary, if the class did not occur in the dataset, the probability is zero. 
         """
-        class_index = 0 if class_name == "happy" else 1
+        class_index = self.__get_classification_index(class_name)
         prob = 1.0
         for feature in self.features:
             class_likelyhood = np.sum(self.train_data[feature][class_index])
@@ -110,3 +115,23 @@ class NaiveBayesClassifier:
             features_model, class_name), self.classes))
         best_class_index = class_predictions.index(max(class_predictions))
         return self.classes[best_class_index]
+
+    def store_trained_model(self, filename: str = TRAINED_MODEL_FILE):
+        # convert ndarrays into lists for serialization
+        serializable_model = {}
+        for feature in self.features:
+            serializable_model[feature] = []
+            for classification in self.classes:
+                class_index = self.__get_classification_index(classification)
+                arr = self.train_data[feature][class_index].tolist()
+                serializable_model[feature].append(arr)
+        with open(filename, 'w') as file:
+            json.dump(serializable_model, file, indent=4)
+
+    def read_trained_model(self, filename: str = TRAINED_MODEL_FILE):
+        with open(filename, 'r') as file:
+            serialized_model = json.load(file)
+            for feature in serialized_model:
+                self.train_data[feature] = np.array([np.array(values_list)
+                                                    for values_list in serialized_model[feature]])
+        print(self.train_data)

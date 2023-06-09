@@ -6,16 +6,17 @@ from utils.data_extraction_constants import *
 
 
 def get_relative_file_path(*arguments):
-    print(os.getcwd())
+    # print(os.getcwd())
     x = os.path.join(".", *arguments)
-    #print(x)
+    # print(x)
     return x
 
 
 def get_user_input_files():
     return os.listdir(get_relative_file_path(USER_FILE_DIRECTORY_NAME))
 
-#this is gonna take a while
+# this is gonna take a while
+
 
 def reset_output_file():
     output_file_path = get_relative_file_path(USER_OUTPUT_DIRECTORY_NAME)

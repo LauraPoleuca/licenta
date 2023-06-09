@@ -4,3 +4,4 @@ BINARY_READ = "rb"
 LATIN_ENCODING = "latin1"
 LABELS = 'labels'
 DATA = 'data'
+TRAINED_MODEL_FILE = 'model.json'

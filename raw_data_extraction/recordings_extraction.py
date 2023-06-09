@@ -5,6 +5,7 @@ import signal_processing.feature_processing as feature_processor
 from utils.data_extraction_constants import DATA
 from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, CHANNEL_INDEXES, GAMMA_BAND_TYPE, BandType
 
+
 def get_recordings(channel_list):
     files = helper.get_user_input_files()
     return sum(map(lambda file_name: get_user_recordings(file_name, channel_list), files), [])
@@ -14,6 +15,7 @@ def get_user_recordings(file_name, channel_list):
     file_content = helper.read_binary_file(file_name)[DATA]
     trial_indexes = list(range(40))
     username = helper.get_username_from_file(file_name).lower()
+    print(f"Processing file {file_name}")
     return sum(map(lambda trial_index: get_user_trial_recordings(username, file_content, trial_index, channel_list), trial_indexes), [])
 
 

@@ -18,16 +18,20 @@ bin_count = 10
 discretizer = Discretizer(bin_count)
 classifier = NaiveBayesClassifier(["ae", "se", "psd", "rms", "corr"], ["happy", "sad"], discretizer)
 # classifier.train_model()
+if True:
+    trials: List[Trial] = list(filter(lambda trial: trial.quadrant in [1, 3], trials))
+    input_models: List[InputModel] = []
+    for trial in trials:
+        trial_outcome = "happy" if trial.quadrant == 1 else "sad"
+        associated_recordings: List[Recording] = list(filter(lambda rec: rec.trial_id == trial.trial_id, recordings))
+        for recording in associated_recordings:
+            input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome))
+            input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome))
+            input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome))
 
-trials: List[Trial] = list(filter(lambda trial: trial.quadrant in [1, 3], trials))
-input_models: List[InputModel] = []
-for trial in trials:
-    trial_outcome = "happy" if trial.quadrant == 1 else "sad"
-    associated_recordings: List[Recording] = list(filter(lambda rec: rec.trial_id == trial.trial_id, recordings))
-    for recording in associated_recordings:
-        input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome))
-        input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome))
-        input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome))
-
-dic = classifier.train_model(input_models)
-print(dic)
+    dic = classifier.train_model(input_models)
+    print(dic)
+    classifier.store_trained_model()
+else:
+    classifier.read_trained_model()
+    # do stuff
