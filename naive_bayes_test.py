@@ -15,5 +15,5 @@ dataset = [
     InputModel(6, 4, 5, 5, 5, "sad")
 ]
 
-classificator.train_model(dataset)
+d = classificator.train_model(dataset)
 print(classificator.get_prediction(InputModel(1, 4, 1, 1, 1, "happy")))

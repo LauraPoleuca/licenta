@@ -72,7 +72,7 @@ class NaiveBayesClassifier:
         self.intervals = self.__get_dataset_features_intervals(dataset)
         for data in dataset:
             # happy index 0, sad index 1
-            class_index = 0 if data.outcome == "happy" else 1
+            class_index = self.__get_classification_index(data.outcome)
             for feature_name in self.features:
                 feature_interval = self.intervals[feature_name]
                 feature_value = data.__dict__[feature_name]

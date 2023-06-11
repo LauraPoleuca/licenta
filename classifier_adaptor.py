@@ -23,7 +23,7 @@ if True:
     input_models: List[InputModel] = []
     for trial in trials:
         trial_outcome = "happy" if trial.quadrant == 1 else "sad"
-        associated_recordings: List[Recording] = list(filter(lambda rec: rec.trial_id == trial.trial_id, recordings))
+        associated_recordings: List[Recording] = list(filter(lambda rec: rec.trial_id == trial.trial_id and rec.user_id == trial.user_id, recordings))
         for recording in associated_recordings:
             input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome))
             input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome))
