@@ -1,3 +1,6 @@
+import multiprocessing as mp
+import time
+
 from data_access.models.recording import Recording
 import raw_data_extraction.data_extraction_helper as helper
 import signal_processing.band_processing as band_processor
@@ -6,9 +9,20 @@ from utils.data_extraction_constants import DATA
 from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, CHANNEL_INDEXES, GAMMA_BAND_TYPE, BandType
 
 
-def get_recordings(channel_list):
-    files = helper.get_user_input_files()
-    return sum(map(lambda file_name: get_user_recordings(file_name, channel_list), files), [])
+def get_recordings_multiprocessing(channel_list):
+    optimized_arguments = get_multiprocessing_arguments(channel_list)
+    with mp.Pool() as pool:
+        start = time.time()
+        results = pool.starmap(optimized_get_user_trial_recordings, optimized_arguments)
+        end = time.time()
+        print(end - start)
+        return sum(results, [])
+
+
+def optimized_get_user_trial_recordings(file_name, trial_index, channel_list):
+    file_content = helper.read_binary_file(file_name)[DATA]
+    username = helper.get_username_from_file(file_name).lower()
+    return get_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 
 def get_user_recordings(file_name, channel_list):
@@ -20,6 +34,7 @@ def get_user_recordings(file_name, channel_list):
 
 
 def get_user_trial_recordings(username, file_content, trial_index, channel_list):
+    print(f"starting for {username} {trial_index}")
     channel_signals = file_content[trial_index]
     recordings = []
     for channel in channel_list:
@@ -41,3 +56,17 @@ def get_feature_list(raw_signal, band_type: BandType):
     rms = feature_processor.get_root_mean_square(banded_signal)
     corr = feature_processor.get_autocorrelation(banded_signal)
     return [se, ae, psd, rms, corr]
+
+
+def get_multiprocessing_arguments(channel_list):
+    files = helper.get_user_input_files()
+    users = []
+    trial_indexes = []
+    channel_lists = []
+    for file in files:
+        indexes = list(range(40))
+        for trial_index in indexes:
+            users.append(file)
+            trial_indexes.append(trial_index)
+            channel_lists.append(channel_list)
+    return zip(users, trial_indexes, channel_lists)

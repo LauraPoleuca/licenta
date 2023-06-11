@@ -1,6 +1,6 @@
 import os
 import time
-from raw_data_extraction.recordings_extraction import get_recordings
+from raw_data_extraction.recordings_extraction import get_recordings_multiprocessing
 from raw_data_extraction.trial_extraction import get_trials
 import utils.database_constants as dbc
 from raw_data_extraction.user_extraction import get_users
@@ -18,7 +18,7 @@ def insert_trials(data_access_service: DataAccessService):
 
 
 def insert_recordings(data_access_service: DataAccessService):
-    recordings = get_recordings(["Fp1"])
+    recordings = get_recordings_multiprocessing(["Fp1"])
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
 
 
@@ -32,6 +32,7 @@ def main():
     insert_recordings(data_access_service)
     end = time.time()
     print(f"Executia a durat {end - start} secunde")
+
 
 if __name__ == "__main__":
     main()
