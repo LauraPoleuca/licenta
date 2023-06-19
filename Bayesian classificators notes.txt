@@ -1,0 +1,39 @@
+Ok so we're talking about Naive Bayesian Classificator
+
+It is a probabilistic classificator, based on Bayes' Theorem. Apparently there are multiple algorithms that can achieve such a thing. 
+
+What's worth noting is that this works only on the asssumption that the inputs are independent. This works well for our approach, if we're working with the signal features I think, 
+as the attributes act independently of eachother. I think.
+
+Ok so boosted trees or random forests can outperform these bayesian classificators, despite their efficiency. 
+
+Say we have K classes (denoted with Ck) and n features x = (x1, x2, ..., xn) as the given input. 
+What we want to achieve is a probability for the likelyhood for each of the K classes for the given input X, then choose the one with the greatest value.
+The problem is in computing the p(Ck|x) for all Ck classes, especially when n is large. 
+Using Bayes formula, we obtain that p(Ck|x) = (p(Ck) * p(x | Ck)) / p(x).
+This shifts the problem a bit, as the p(x) is the same for all classes Ck. So we're left with the numerator. It can be further rewritten as p(Ck, ...x) 
+(idk some value combination value rule)
+
+Now, there is another rule (chain rule) that calculates the probability of n independent variables. When applying it to our shit, we get a chain product of probabilities. 
+We get:
+p(x1, x2, ..., xn, Ck) = P(x1|x2, ..., xn, Ck) * P(x2, x3, ..., xn, Ck)
+                       = P(x1|x2, ..., xn, Ck) * P(x2| x3, ..., xn, Ck) * P(x3, x4, ..., xn, Ck)
+                       = ... (take into account that since the x variables are independent, they do not contribute to the probability in the product, therefore all x variable can be eliminated)
+                       = P(x1|Ck) * P(x2|Ck) * P(x3|Ck) * ... * P(xn|Ck) * P(Ck)
+
+which means that when comparing the P(Ck|x), we only need to compare the product of probabilities with i from 1 to n of P(xi|Ck) multiplied with P(Ck)
+
+Ok so when builing the classifier, you actually need to pick what s called a "decision rule". The whole "pick the class with largest probability" is called "maximum a posteriori"
+(pretentious fuckers), and is the most common rule used. I suppose there could be multiple rules used and maybe we could make a whole comparison theme about it, but 
+that s about it. 
+
+So in order to determine the classes "prior" (i.e. P(Ck)), we should actually take a look at our data set and determine the likelyhood of the classes by counting the trials.
+So P(C_happy) = # of happy classes / set size, and the P(C_sad) = 1 - P(C_happy)
+That's one thing out of the way so yeah, nice. 
+
+Now. What the shit do I do with the rest? Since you know, I just realized I am not dealing with discrete values in this case. Like, in the AI lab, all of the data
+was given as a values from a clear set (yes/no, true/false, sunny/cloudy/rainy/windy). Is there a way of idk, extrapolating these values? Or like, using some intervals
+to put values in and then use those intervals? That sounds wrong. 
+
+Ok so there is a way that I can do that. It's called discretizing continous variables, and it essentially boils down to dividing the values into a set of intervals called
+bins. Which could work. And sounds the least troublesome. And easy to implement. 
