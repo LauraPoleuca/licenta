@@ -3,7 +3,7 @@ import numpy as np
 
 from typing import List
 from copy import deepcopy
-from input_model_test import InputModel
+from data_access.models.input_model import InputModel
 
 from discretizer import Discretizer
 from utils.data_extraction_constants import TRAINED_MODEL_FILE

@@ -1,9 +1,11 @@
 import sqlite3
 import os
+from typing import List
+from data_access.models.input_model import InputModel
+from data_access.models.recording import Recording
+from data_access.models.trial import Trial
 
 import utils.database_constants as dbc
-from data_access.models.user import User
-
 
 class DataAccessService:
 
@@ -36,6 +38,20 @@ class DataAccessService:
     def clear_database(self):
         self.db_connection.close()
         os.remove(dbc.DATABASE_PATH)
+
+    def generate_input_models(self):
+        recordings = self.retrieve_range_data(dbc.SELECT_RECORDINGS, Recording)
+        trials = self.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
+        trials: List[Trial] = list(filter(lambda trial: trial.quadrant in [1, 3], trials))
+        input_models: List[InputModel] = []
+        for trial in trials:
+            trial_outcome = "happy" if trial.quadrant == 1 else "sad"
+            associated_recordings: List[Recording] = list(filter(lambda rec: rec.trial_id == trial.trial_id and rec.user_id == trial.user_id, recordings))
+            for recording in associated_recordings:
+                input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome))
+                input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome))
+                input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome))
+        return input_models
 
     def __get_entities_tuple(self, entities):
         return list(map(lambda x: x.get_tuple(), entities))

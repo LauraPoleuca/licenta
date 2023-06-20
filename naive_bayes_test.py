@@ -1,4 +1,4 @@
-from input_model_test import InputModel
+from data_access.models.input_model import InputModel
 from naive_bayes_classifier import NaiveBayesClassifier
 from discretizer import Discretizer
 
