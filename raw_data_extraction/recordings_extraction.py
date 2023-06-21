@@ -1,7 +1,9 @@
 import multiprocessing as mp
 import time
+from typing import List
 
 from data_access.models.recording import Recording
+from data_access.models.trial import Trial
 import raw_data_extraction.data_extraction_helper as helper
 import signal_processing.band_processing as band_processor
 import signal_processing.feature_processing as feature_processor
@@ -9,8 +11,8 @@ from utils.data_extraction_constants import DATA
 from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, CHANNEL_INDEXES, GAMMA_BAND_TYPE, BandType
 
 
-def get_recordings_multiprocessing(channel_list):
-    optimized_arguments = get_multiprocessing_arguments(channel_list)
+def get_recordings_multiprocessing(channel_list, trial_list):
+    optimized_arguments = get_multiprocessing_arguments(channel_list, trial_list)
     with mp.Pool() as pool:
         start = time.time()
         results = pool.starmap(optimized_get_user_trial_recordings, optimized_arguments)
@@ -58,15 +60,19 @@ def get_feature_list(raw_signal, band_type: BandType):
     return [se, ae, psd, rms, corr]
 
 
-def get_multiprocessing_arguments(channel_list):
-    files = helper.get_user_input_files()
+def get_multiprocessing_arguments(channel_list, trials: List[Trial] = []):
+    # files = helper.get_user_input_files()
     users = []
     trial_indexes = []
     channel_lists = []
-    for file in files:
-        indexes = list(range(40))
-        for trial_index in indexes:
-            users.append(file)
-            trial_indexes.append(trial_index)
-            channel_lists.append(channel_list)
+    # for file in files:
+        # indexes = list(range(40))
+        # for trial_index in indexes:
+            # users.append(file)
+            # trial_indexes.append(trial_index)
+            # channel_lists.append(channel_list)
+    for trial in trials:
+        users.append(trial.user_id + ".dat")
+        trial_indexes.append(trial.trial_id - 1)
+        channel_lists.append(channel_list)
     return zip(users, trial_indexes, channel_lists)

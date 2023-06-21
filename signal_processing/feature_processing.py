@@ -11,13 +11,13 @@ def get_signal_psd(signal, bandType: BandType):
 
 
 def get_approximate_entropy(signal):
-    r = np.std(signal)
+    r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
     return approx_entropy(sample, 2, r)
 
 
 def get_sample_entropy(signal):
-    r = np.std(signal)
+    r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
     return sampen(sample, 2, r)
 
