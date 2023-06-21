@@ -1,3 +1,4 @@
+import numpy as np
 from typing import List
 
 
@@ -18,3 +19,9 @@ class InputModel:
     @classmethod
     def from_list(cls, feature_list: List, outcome: str):
         return cls(feature_list[0], feature_list[1], feature_list[2], feature_list[3], feature_list[4], outcome)
+    
+    def get_feature_list(self):
+        return np.array([self.ae, self.se, self.psd, self.rms, self.corr])
+    
+    def get_feature_sublist(self):
+        return np.array([self.ae, self.se, self.corr])

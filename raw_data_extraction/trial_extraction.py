@@ -3,17 +3,19 @@ from utils.data_extraction_constants import LABELS
 from data_access.models.trial import Trial
 
 
-def get_trials():
+def get_trials(quadrant_filtering: bool = False):
     files = helper.get_user_input_files()
-    return sum(map(lambda file_name: get_user_trials(file_name), files), [])
+    return sum(map(lambda file_name: get_user_trials(quadrant_filtering, file_name), files), [])
 
 
-def get_user_trials(file_name: str):
+def get_user_trials(quadrant_filtering: bool,file_name: str):
     file_content = helper.read_binary_file(file_name)
     username = helper.get_username_from_file(file_name)
     labels = file_content[LABELS]
-    return list(map(lambda trial_index, label_set: Trial(username, trial_index + 1, label_set[0], label_set[1], get_user_trial_quadrant(label_set[0], label_set[1])), range(len(labels)), labels))
-
+    trials = list(map(lambda trial_index, label_set: Trial(username, trial_index + 1, label_set[0], label_set[1], get_user_trial_quadrant(label_set[0], label_set[1])), range(len(labels)), labels))
+    if quadrant_filtering:
+        trials = list(filter(lambda t: t.quadrant in [1, 3], trials))
+    return trials
 
 def get_user_trial_quadrant(valence: float, arousal: float):
     threshold_value = 4.5
