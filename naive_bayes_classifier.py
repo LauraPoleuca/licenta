@@ -61,7 +61,7 @@ class NaiveBayesClassifier:
             frequency_dict[feature] = (deepcopy(freq_table))
         return frequency_dict
 
-    def train_model(self, dataset: List[InputModel]):
+    def train_model(self, dataset: List[InputModel]) -> dict:
         """
         Create a new frequency dictionary for all the features.
         For each data input in the dataset, pick up each of the features, determine the appropriate indexes for the bin
