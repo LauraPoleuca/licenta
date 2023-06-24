@@ -1,6 +1,6 @@
+from classifiers.dependencies.discretizer import Discretizer
+from classifiers.naive_bayes_classifier import NaiveBayesClassifier
 from data_access.models.input_model import InputModel
-from naive_bayes_classifier import NaiveBayesClassifier
-from discretizer import Discretizer
 
 discretizer = Discretizer(5)
 classificator = NaiveBayesClassifier(["ae", "se", "psd", "rms", "corr"], [
@@ -15,5 +15,5 @@ dataset = [
     InputModel(6, 4, 5, 5, 5, "sad")
 ]
 
-d = classificator.train_model(dataset)
-print(classificator.get_prediction(InputModel(1, 4, 1, 1, 1, "happy")))
+d = classificator.train_classifier(dataset)
+print(classificator.predict(InputModel(1, 4, 1, 1, 1, "happy")))
