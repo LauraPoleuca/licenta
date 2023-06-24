@@ -40,7 +40,9 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
     channel_signals = file_content[trial_index]
     recordings = []
     for channel in channel_list:
-        channel_index = CHANNEL_INDEXES[channel]
+        #!!! I think that the channel index might be wrong, as the values in the CHANNEL_INDEXES dict
+        # start at 1 (CHANNEL COUNT), but the data should be retreived using a CHANNEL INDEX 
+        channel_index = CHANNEL_INDEXES[channel] - 1
         raw_channel_signal = channel_signals[channel_index]
         alpha_features = get_feature_list(raw_channel_signal, ALPHA_BAND_TYPE)
         beta_features = get_feature_list(raw_channel_signal, BETA_BAND_TYPE)
@@ -52,7 +54,8 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 def get_feature_list(raw_signal, band_type: BandType):
     banded_signal = band_processor.filter(raw_signal, band_type)
-    psd = feature_processor.get_signal_psd(banded_signal, band_type)
+    #TODO: check if we continue to use the raw or the banded signal. banded looked (?) better
+    psd = feature_processor.get_signal_psd(raw_signal, band_type)
     ae = feature_processor.get_approximate_entropy(banded_signal)
     se = feature_processor.get_sample_entropy(banded_signal)
     rms = feature_processor.get_root_mean_square(banded_signal)

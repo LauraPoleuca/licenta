@@ -5,6 +5,8 @@ from data_access.models.trial import Trial
 
 def get_trials(quadrant_filtering: bool = False):
     files = helper.get_user_input_files()
+    #TODO: temporary use for debugging, remove this!
+    files = ['s01.dat', 's18.dat']
     return sum(map(lambda file_name: get_user_trials(quadrant_filtering, file_name), files), [])
 
 
@@ -21,7 +23,7 @@ def get_user_trial_quadrant(valence: float, arousal: float):
     threshold_value = 4.5
     is_valence_high = valence > threshold_value
     is_arousal_high = arousal > threshold_value
-    if is_valence_high and is_valence_high:
+    if is_valence_high and is_arousal_high:
         return 1
     if not is_valence_high and is_arousal_high:
         return 2

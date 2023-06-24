@@ -1,10 +1,20 @@
 import scipy
 import numpy as np
 from utils.signal_constants import SAMPLING_HIGHER_BOUND, SAMPLING_LOWER_BOUND, SAMPLING_RATE, BandType
+import statsmodels.api as sm
+import matplotlib.pyplot as plt 
 
 
 def get_signal_psd(signal, bandType: BandType):
-    _, psd = scipy.signal.welch(signal, SAMPLING_RATE, scaling='spectrum')
+    f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
+    # _, psd = scipy.signal.welch(signal, SAMPLING_RATE)
+    plt.figure()
+    plt.semilogy(f, psd, label=bandType.enum_type)
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Power Spectral Density')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
     scaled_low = int(bandType.low_frequency * 4)
     scaled_high = int(bandType.high_frequency * 4)
     return np.max(psd[scaled_low: scaled_high])
@@ -27,13 +37,17 @@ def get_root_mean_square(signal):
 
 
 def get_autocorrelation(signal):
-    data = np.array(signal)
-    mean = np.mean(data)
-    variance = np.var(data)
-    normalized_data = data - mean
-    acorr = np.correlate(normalized_data, normalized_data, 'full')[len(normalized_data)-1:]
-    return np.average(acorr / variance / len(normalized_data))
+    # data = np.array(signal)
+    # mean = np.mean(data)
+    # variance = np.var(data)
+    # normalized_data = data - mean
+    # acorr = np.correlate(normalized_data, normalized_data, 'full')[len(normalized_data)-1:]
+    # return np.average(acorr / variance / len(normalized_data))
 
+    # autocorr = np.correlate(signal, signal, mode='full')
+    # autocorr /= np.max(autocorr)
+    autocorr = sm.tsa.acf(signal, nlags = len(signal)-1)
+    return np.average(autocorr)
 
 def approx_entropy(signal, m, r) -> float:
 

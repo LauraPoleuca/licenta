@@ -9,6 +9,11 @@ from data_access.data_access_service import DataAccessService
 
 
 def insert_users(data_access_service: DataAccessService):
+    """
+    Description - what the method does
+        - data_access_service: service responsible for inserting the data in the db
+        - outputs: None
+    """
     users = get_users()
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_USERS, users)
 
@@ -20,7 +25,7 @@ def insert_trials(data_access_service: DataAccessService):
 
 def insert_recordings(data_access_service: DataAccessService):
     trials = data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
-    recordings = get_recordings_multiprocessing(["Fp1"],trials)
+    recordings = get_recordings_multiprocessing(["Fz"],trials)
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
 
 

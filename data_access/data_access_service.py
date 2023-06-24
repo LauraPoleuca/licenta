@@ -6,6 +6,7 @@ from data_access.models.recording import Recording
 from data_access.models.trial import Trial
 
 import utils.database_constants as dbc
+from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, GAMMA_BAND_TYPE, BandType
 
 class DataAccessService:
 
@@ -48,9 +49,9 @@ class DataAccessService:
             trial_outcome = "happy" if trial.quadrant == 1 else "sad"
             associated_recordings: List[Recording] = list(filter(lambda rec: rec.trial_id == trial.trial_id and rec.user_id == trial.user_id, recordings))
             for recording in associated_recordings:
-                input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome))
-                input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome))
-                input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome))
+                input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome, ALPHA_BAND_TYPE))
+                input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome, BETA_BAND_TYPE))
+                input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome, GAMMA_BAND_TYPE))
         return input_models
 
     def __get_entities_tuple(self, entities):
