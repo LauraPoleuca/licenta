@@ -4,6 +4,7 @@ from typing import List
 
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
+from graphing.signal_plotter import plot_signal
 import raw_data_extraction.data_extraction_helper as helper
 import signal_processing.band_processing as band_processor
 import signal_processing.feature_processing as feature_processor
@@ -36,7 +37,7 @@ def get_user_recordings(file_name, channel_list):
 
 
 def get_user_trial_recordings(username, file_content, trial_index, channel_list):
-    print(f"starting for {username} {trial_index}")
+    print(f"Processing recordings for {username} - trial {trial_index}")
     channel_signals = file_content[trial_index]
     recordings = []
     for channel in channel_list:
@@ -54,13 +55,15 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 def get_feature_list(raw_signal, band_type: BandType):
     banded_signal = band_processor.filter(raw_signal, band_type)
+    # plot_signal(banded_signal)
     #TODO: check if we continue to use the raw or the banded signal. banded looked (?) better
-    psd = feature_processor.get_signal_psd(raw_signal, band_type)
+    # banded_signal = feature_processor.extract_sample(banded_signal)
     ae = feature_processor.get_approximate_entropy(banded_signal)
     se = feature_processor.get_sample_entropy(banded_signal)
+    psd = feature_processor.get_signal_psd(banded_signal, band_type)
     rms = feature_processor.get_root_mean_square(banded_signal)
     corr = feature_processor.get_autocorrelation(banded_signal)
-    return [se, ae, psd, rms, corr]
+    return [ae, se, psd, rms, corr]
 
 
 def get_multiprocessing_arguments(channel_list, trials: List[Trial] = []):

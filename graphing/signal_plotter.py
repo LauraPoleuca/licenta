@@ -11,9 +11,10 @@ def plot_signal(filtered_signal):
                   constants.SAMPLING_LOWER_BOUND)
     _, axs = plt.subplots()
     #axs.set_title("Signal")
-    axs.plot(t, filtered_signal, color='b')
+    sampled_filtered_signal = filtered_signal[constants.SAMPLING_LOWER_BOUND:constants.SAMPLING_HIGHER_BOUND]
+    axs.plot(t, sampled_filtered_signal, color='b')
     #axs.set_xlabel("Time")
-    #axs.set_ylabel("Amplitude")
+    #axs.set_ylabel("Amplitude")    
     plt.show()
 
 
