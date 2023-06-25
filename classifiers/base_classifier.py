@@ -5,7 +5,7 @@ from data_access.models.input_model import InputModel
 class Classifier:
     
     def __init__(self) -> None:
-        pass
+        self.name = "Base classifier"
 
     def train_classifier(self, input_models: List[InputModel]) -> None:
         pass

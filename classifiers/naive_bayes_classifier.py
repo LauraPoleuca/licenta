@@ -13,6 +13,8 @@ from utils.data_extraction_constants import TRAINED_MODEL_FILE
 class NaiveBayesClassifier(Classifier):
 
     def __init__(self, features: List[str], classes: List[str], discretizer: Discretizer) -> None:
+        super().__init__()
+        self.name = "Naive Bayes classifier"
         self.features: List[str] = features
         self.classes: List[str] = classes
         self.discretizer: Discretizer = discretizer
@@ -91,6 +93,9 @@ class NaiveBayesClassifier(Classifier):
                 feature_interval[0], feature_interval[1], feature_value)
             if class_likelyhood == 0:
                 return 0  # temp solution until using log
+            # TEMPORARY SOLUTION, FIX THIS!!!!
+            if bin_index > self.discretizer.bin_count:
+                return 0
             prob *= (self.train_data[feature]
                      [class_index, bin_index]) / class_likelyhood
         return prob

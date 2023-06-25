@@ -27,4 +27,4 @@ class InputModel:
         return np.array([self.ae, self.se, self.psd, self.rms, self.corr])
     
     def get_feature_sublist(self):
-        return np.array([self.ae, self.psd, self.rms])
+        return np.array([self.rms, self.corr, self.se])

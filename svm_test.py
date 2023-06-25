@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 from data_access.data_access_service import DataAccessService
 
 data_access = DataAccessService()
-input_models = data_access.generate_input_models()[1::3]
-# feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_list(), input_models)))
-feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_sublist(), input_models)))
+input_models = data_access.generate_input_models()[::3]
+feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_list(), input_models)))
+# feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_sublist(), input_models)))
 outcomes = np.array(list(map(lambda input_model: input_model.outcome, input_models)))
 
 clf = svm.SVC(kernel="rbf", gamma=0.9999)
