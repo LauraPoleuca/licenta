@@ -1,3 +1,4 @@
+from typing import List
 import scipy
 import numpy as np
 from utils.signal_constants import SAMPLING_HIGHER_BOUND, SAMPLING_LOWER_BOUND, SAMPLING_RATE, BandType
@@ -5,7 +6,7 @@ import statsmodels.api as sm
 import matplotlib.pyplot as plt 
 
 
-def get_signal_psd(signal, bandType: BandType):
+def get_signal_psd(signal, bandType: BandType) -> float:
     f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
     # _, psd = scipy.signal.welch(signal, SAMPLING_RATE)
     plt.figure()
@@ -20,23 +21,23 @@ def get_signal_psd(signal, bandType: BandType):
     return np.max(psd[scaled_low: scaled_high])
 
 
-def get_approximate_entropy(signal):
+def get_approximate_entropy(signal) -> float:
     r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
     return approx_entropy(sample, 2, r)
 
 
-def get_sample_entropy(signal):
+def get_sample_entropy(signal) -> float:
     r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
     return sampen(sample, 2, r)
 
 
-def get_root_mean_square(signal):
+def get_root_mean_square(signal) -> float:
     return np.sqrt(np.mean([x ** 2 for x in signal]))
 
 
-def get_autocorrelation(signal):
+def get_autocorrelation(signal) -> float:
     # data = np.array(signal)
     # mean = np.mean(data)
     # variance = np.var(data)
@@ -67,7 +68,7 @@ def approx_entropy(signal, m, r) -> float:
     return abs(_phi(m + 1) - _phi(m))
 
 
-def sampen(L, m, r):
+def sampen(L, m, r) -> float:
 
     N = len(L)
     B = 0.0
@@ -86,5 +87,5 @@ def sampen(L, m, r):
     return -np.log(A / B)
 
 
-def extract_sample(signal):
+def extract_sample(signal) -> List:
     return signal[SAMPLING_LOWER_BOUND:SAMPLING_HIGHER_BOUND]

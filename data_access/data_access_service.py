@@ -16,31 +16,45 @@ class DataAccessService:
         self.db_connection = sqlite3.connect(dbc.DATABASE_PATH)
         self.db_connection.execute(dbc.FOREIGN_KEYS_ENABLED)
 
-    def initialize_database(self):
+    """
+    Description - creates the tables in db
+    """
+    def initialize_database(self) -> None:
         cursor = self.db_connection.cursor()
         cursor.execute(dbc.CREATE_USER_TABLE_SCRIPT)
         cursor.execute(dbc.CREATE_TRIAL_TABLE_SCRIPT)
         cursor.execute(dbc.CREATE_RECORDINGS_TABLE_SCRIPT)
         cursor.close()
 
-    def insert_range_data(self, insert_script, entities):
+    """
+    inserts data in db
+    """
+    def insert_range_data(self, insert_script, entities) -> None:
         cursor = self.db_connection.cursor()
         entities_data = self.__get_entities_tuple(entities)
         cursor = cursor.executemany(insert_script, entities_data)
         self.db_connection.commit()
         cursor.close()
 
-    def retrieve_range_data(self, select_script, entity_class):
+    """
+    retrieves data from db
+        - inputs: 
+        - outputs: list of objects of model type
+    """
+    def retrieve_range_data(self, select_script, entity_class) -> List:
         cursor = self.db_connection.cursor()
         cursor.execute(select_script)
         entity_tuples = cursor.fetchall()
         return list(map(lambda entity_tuple: entity_class.from_entity_tuple(entity_tuple), entity_tuples))
 
-    def clear_database(self):
+    """
+    closes the db connection and removes
+    """
+    def clear_database(self) -> None:
         self.db_connection.close()
         os.remove(dbc.DATABASE_PATH)
 
-    def generate_input_models(self):
+    def generate_input_models(self) -> List:
         recordings = self.retrieve_range_data(dbc.SELECT_RECORDINGS, Recording)
         trials = self.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
         trials: List[Trial] = list(filter(lambda trial: trial.quadrant in [1, 3], trials))
@@ -54,5 +68,5 @@ class DataAccessService:
                 input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome, GAMMA_BAND_TYPE))
         return input_models
 
-    def __get_entities_tuple(self, entities):
+    def __get_entities_tuple(self, entities) -> List:
         return list(map(lambda x: x.get_tuple(), entities))

@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import numpy as np
-from typing import List
+from typing import List, Type
 
 from utils.signal_constants import BandType
 
@@ -20,11 +22,11 @@ class InputModel:
         self.band = band
 
     @classmethod
-    def from_list(cls, feature_list: List, outcome: str, band: BandType):
+    def from_list(cls, feature_list: List, outcome: str, band: BandType) -> InputModel:
         return cls(feature_list[0], feature_list[1], feature_list[2], feature_list[3], feature_list[4], outcome, band)
     
-    def get_feature_list(self):
+    def get_feature_list(self) -> np.ndarray:
         return np.array([self.ae, self.se, self.psd, self.rms, self.corr])
     
-    def get_feature_sublist(self):
+    def get_feature_sublist(self) -> np.ndarray:
         return np.array([self.ae, self.psd, self.rms])

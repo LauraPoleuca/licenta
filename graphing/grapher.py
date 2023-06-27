@@ -4,7 +4,7 @@ import numpy as np
 import utils.signal_constants as constants
 
 
-def plot_signal(filtered_signal):
+def plot_signal(filtered_signal) -> None:
     plt.rcParams["figure.figsize"] = [15, 7]
     plt.rcParams["figure.autolayout"] = True
     t = np.arange(0, constants.SAMPLING_HIGHER_BOUND -

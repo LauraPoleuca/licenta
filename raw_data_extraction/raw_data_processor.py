@@ -25,7 +25,7 @@ class TrialData:
     data: list[ChannelData]
 
 
-def read_file(file_name: str, channels: list[str]):
+def read_file(file_name: str, channels: list[str]) -> List:
     trial_list: list[TrialData] = []
     file_data = helper.read_binary_file(file_name)
     for index, trial_content in enumerate(file_data["data"]):
@@ -38,14 +38,14 @@ def read_file(file_name: str, channels: list[str]):
     return trial_list
 
 
-def write_user_files(user: str, trial_data_list: list[TrialData]):
+def write_user_files(user: str, trial_data_list: list[TrialData]) -> None:
     helper.create_user_folder(user)
     for index, trial in enumerate(trial_data_list):
         file_name = helper.get_user_trial_filename(user, index)
         write_data_to_file(file_name, trial)
 
 
-def write_data_to_file(file_path: str, trial_data: TrialData):
+def write_data_to_file(file_path: str, trial_data: TrialData) -> None:
     rows = map(
         lambda channel_data: [channel_data.channel_name] +
         list(map(lambda x: str(x), channel_data.channel_values)),
@@ -57,7 +57,7 @@ def write_data_to_file(file_path: str, trial_data: TrialData):
     file.close()
 
 
-def process_raw_data():
+def process_raw_data() -> None:
     helper.reset_output_file()
     for file in helper.get_user_input_files():
         trials = read_file(file, signal_constants.CHANNEL_INDEXES.keys())

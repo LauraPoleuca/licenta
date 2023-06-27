@@ -81,10 +81,10 @@ class NaiveBayesClassifier:
                 self.train_data[feature_name][class_index, bin_index] += 1
         return self.train_data
 
-    def __get_classification_index(self, class_name: str):
+    def __get_classification_index(self, class_name: str) -> int:
         return 0 if class_name == "happy" else 1
 
-    def __get_class_likelyhood(self, features_model: InputModel, class_name: str):
+    def __get_class_likelyhood(self, features_model: InputModel, class_name: str) -> float:
         """
         Calculates the likelyhood of a given class to occur for a given features model.
         Based on the independency of the variables, this can be calculated as the product of
@@ -106,7 +106,7 @@ class NaiveBayesClassifier:
                      [class_index, bin_index]) / class_likelyhood
         return prob
 
-    def get_prediction(self, features_model: InputModel):
+    def get_prediction(self, features_model: InputModel) -> List:
         """
         Calculates all probabilities for all classes.
         Uses the pick method to select a class returns it
@@ -116,7 +116,7 @@ class NaiveBayesClassifier:
         best_class_index = class_predictions.index(max(class_predictions))
         return self.classes[best_class_index]
 
-    def store_trained_model(self, filename: str = TRAINED_MODEL_FILE):
+    def store_trained_model(self, filename: str = TRAINED_MODEL_FILE) -> None:
         # convert ndarrays into lists for serialization
         serializable_model = {}
         for feature in self.features:
@@ -128,7 +128,7 @@ class NaiveBayesClassifier:
         with open(filename, 'w') as file:
             json.dump(serializable_model, file, indent=4)
 
-    def read_trained_model(self, filename: str = TRAINED_MODEL_FILE):
+    def read_trained_model(self, filename: str = TRAINED_MODEL_FILE) -> None:
         with open(filename, 'r') as file:
             serialized_model = json.load(file)
             for feature in serialized_model:

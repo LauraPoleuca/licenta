@@ -8,7 +8,7 @@ from raw_data_extraction.user_extraction import get_users
 from data_access.data_access_service import DataAccessService
 
 
-def insert_users(data_access_service: DataAccessService):
+def insert_users(data_access_service: DataAccessService) -> None:
     """
     Description - what the method does
         - data_access_service: service responsible for inserting the data in the db
@@ -18,12 +18,12 @@ def insert_users(data_access_service: DataAccessService):
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_USERS, users)
 
 
-def insert_trials(data_access_service: DataAccessService):
+def insert_trials(data_access_service: DataAccessService) -> None:
     trials = get_trials(quadrant_filtering=True)
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_TRIALS, trials)
 
 
-def insert_recordings(data_access_service: DataAccessService):
+def insert_recordings(data_access_service: DataAccessService) -> None:
     trials = data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
     recordings = get_recordings_multiprocessing(["Fz"],trials)
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
