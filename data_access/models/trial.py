@@ -12,6 +12,9 @@ class Trial(BaseModel):
         super().__init__()
 
     def get_tuple(self) -> tuple:
+        """
+        returns a tuple based on a Trial object
+        """
         return (self.user_id,
                 str(self.trial_id),
                 str(self.valence),
@@ -20,4 +23,9 @@ class Trial(BaseModel):
 
     @classmethod
     def from_entity_tuple(cls, entity_tuple: tuple) -> None:
+        """
+        acts as a constructor for a Trial
+            - input: tuple representing the object
+            - output: object of Trial type
+        """
         return cls(entity_tuple[0], entity_tuple[1], entity_tuple[2], entity_tuple[3], entity_tuple[4])

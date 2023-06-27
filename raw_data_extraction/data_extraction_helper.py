@@ -7,6 +7,9 @@ from utils.data_extraction_constants import *
 
 
 def get_relative_file_path(*arguments) -> str:
+    """
+    creates the relative path for a file
+    """
     # print(os.getcwd())
     x = os.path.join(".", *arguments)
     # print(x)
@@ -14,12 +17,18 @@ def get_relative_file_path(*arguments) -> str:
 
 
 def get_user_input_files() -> List:
+    """
+    returns a list of files from a directory
+    """
     return os.listdir(get_relative_file_path(USER_FILE_DIRECTORY_NAME))
 
 # this is gonna take a while
 
 
 def reset_output_file() -> None:
+    """
+    recursively removes the content from output file and creates a new empty one
+    """
     output_file_path = get_relative_file_path(USER_OUTPUT_DIRECTORY_NAME)
     shutil.rmtree(output_file_path)
     os.mkdir(output_file_path)

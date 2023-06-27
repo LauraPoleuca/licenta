@@ -16,45 +16,54 @@ class DataAccessService:
         self.db_connection = sqlite3.connect(dbc.DATABASE_PATH)
         self.db_connection.execute(dbc.FOREIGN_KEYS_ENABLED)
 
-    """
-    Description - creates the tables in db
-    """
+    
     def initialize_database(self) -> None:
+        """
+        creates the tables in db
+        """
         cursor = self.db_connection.cursor()
         cursor.execute(dbc.CREATE_USER_TABLE_SCRIPT)
         cursor.execute(dbc.CREATE_TRIAL_TABLE_SCRIPT)
         cursor.execute(dbc.CREATE_RECORDINGS_TABLE_SCRIPT)
         cursor.close()
 
-    """
-    inserts data in db
-    """
+    
     def insert_range_data(self, insert_script, entities) -> None:
+        """
+        inserts data in db
+        """
         cursor = self.db_connection.cursor()
         entities_data = self.__get_entities_tuple(entities)
         cursor = cursor.executemany(insert_script, entities_data)
         self.db_connection.commit()
         cursor.close()
 
-    """
-    retrieves data from db
-        - inputs: 
-        - outputs: list of objects of model type
-    """
+    
     def retrieve_range_data(self, select_script, entity_class) -> List:
+        """
+        retrieves data from db
+            - inputs: sql select query, model type that needs to be extracted from the db
+            - outputs: list of objects of entity_class type
+        """
         cursor = self.db_connection.cursor()
         cursor.execute(select_script)
         entity_tuples = cursor.fetchall()
         return list(map(lambda entity_tuple: entity_class.from_entity_tuple(entity_tuple), entity_tuples))
 
-    """
-    closes the db connection and removes
-    """
+   
     def clear_database(self) -> None:
+        """
+        closes the db connection and deletes the db file
+        """
         self.db_connection.close()
         os.remove(dbc.DATABASE_PATH)
 
     def generate_input_models(self) -> List:
+        """
+        generates InputModel objects using the data from db
+            - inputs: None
+            - outputs: list of objects of InputModel type
+        """
         recordings = self.retrieve_range_data(dbc.SELECT_RECORDINGS, Recording)
         trials = self.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
         trials: List[Trial] = list(filter(lambda trial: trial.quadrant in [1, 3], trials))
@@ -69,4 +78,9 @@ class DataAccessService:
         return input_models
 
     def __get_entities_tuple(self, entities) -> List:
+        """
+        returns a list of tuples for the given entities
+            - inputs: list of entities 
+            - outputs: list of tuples
+        """
         return list(map(lambda x: x.get_tuple(), entities))

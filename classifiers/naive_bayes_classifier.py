@@ -41,7 +41,7 @@ class NaiveBayesClassifier(Classifier):
                 self.train_data[feature_name][class_index, bin_index] += 1
         # return self.train_data
 
-    def predict(self, input_model: InputModel):
+    def predict(self, input_model: InputModel) -> List:
         """
         Calculates all probabilities for all classes.
         Uses the pick method to select a class returns it
@@ -51,7 +51,7 @@ class NaiveBayesClassifier(Classifier):
         best_class_index = class_predictions.index(max(class_predictions))
         return self.classes[best_class_index]
     
-    def store_trained_model(self, filename: str = TRAINED_MODEL_FILE):
+    def store_trained_model(self, filename: str = TRAINED_MODEL_FILE) -> None:
         # convert ndarrays into lists for serialization
         serializable_model = {}
         for feature in self.features:
@@ -61,9 +61,9 @@ class NaiveBayesClassifier(Classifier):
                 arr = self.train_data[feature][class_index].tolist()
                 serializable_model[feature].append(arr)
         with open(filename, 'w') as file:
-            json.dump(serializable_model, file, indent=4)
+            json.dump(serializable_model, file, indent = 4)
 
-    def read_trained_model(self, filename: str = TRAINED_MODEL_FILE):
+    def read_trained_model(self, filename: str = TRAINED_MODEL_FILE) -> None:
         with open(filename, 'r') as file:
             serialized_model = json.load(file)
             for feature in serialized_model:

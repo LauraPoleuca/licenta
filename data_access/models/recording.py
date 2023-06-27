@@ -15,6 +15,9 @@ class Recording(BaseModel):
         super().__init__()
 
     def get_tuple(self) -> tuple:
+        """
+        returns a tuple based on a Recording object
+        """
         return (
             str(self.user_id),
             self.trial_id,
@@ -41,6 +44,11 @@ class Recording(BaseModel):
 
     @classmethod
     def from_entity_tuple(cls, entity_tuple: tuple) -> None:
+        """
+        acts as a constructor for a Recording
+            - input: tuple representing the object
+            - output: object of Recording type
+        """
         return cls(entity_tuple[2],
                    entity_tuple[0],
                    entity_tuple[1],
