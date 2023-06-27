@@ -25,7 +25,7 @@ def insert_trials(data_access_service: DataAccessService) -> None:
 
 def insert_recordings(data_access_service: DataAccessService) -> None:
     trials = data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
-    recordings = get_recordings_multiprocessing(["Fz"],trials)
+    recordings = get_recordings_multiprocessing(["Fp1"],trials)
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
 
 

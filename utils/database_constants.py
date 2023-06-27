@@ -24,13 +24,13 @@ CREATE_RECORDINGS_TABLE_SCRIPT = "CREATE TABLE recordings (\
     alpha_psd TEXT,\
     alpha_rms TEXT,\
     alpha_corr TEXT,\
-    beta_es TEXT,\
-    beta_as TEXT,\
+    beta_ae TEXT,\
+    beta_se TEXT,\
     beta_psd TEXT,\
     beta_rms TEXT,\
     beta_corr TEXT,\
-    gamma_es TEXT,\
-    gamma_as TEXT,\
+    gamma_ae TEXT,\
+    gamma_se TEXT,\
     gamma_psd TEXT,\
     gamma_rms TEXT,\
     gamma_corr TEXT,\

@@ -11,8 +11,10 @@ def get_filter_polynomials(lowcut_frequency: float, highcut_frequency: float, sa
     nyquist_frequency = 0.5 * sampling_frequency
     lowcut_nyquist = lowcut_frequency / nyquist_frequency
     highcut_nyquist = highcut_frequency / nyquist_frequency
-    numerator, denominator = signal.butter(
-        filter_order, [lowcut_nyquist, highcut_nyquist], btype='bandpass')
+    # numerator, denominator = signal.butter(
+    #     filter_order, [lowcut_nyquist, highcut_nyquist], btype='bandpass')
+    numerator, denominator = signal.cheby2(
+        filter_order, 3, [lowcut_nyquist, highcut_nyquist], btype='bandpass')
     return numerator, denominator
 
 
@@ -23,6 +25,7 @@ def filter(eeg_signal: any, band: BandType) -> np.ndarray:
 
 
 def get_signal(username: str, file_name: str, channel_name: str) ->np.ndarray:
+#TODO: idk why this is still here it seems like it has no use
     file_path = helper.get_relative_file_path(
         extraction_constants.USER_OUTPUT_DIRECTORY_NAME, username, file_name)
     channel_index = signal_constants.CHANNEL_INDEXES[channel_name] - 1

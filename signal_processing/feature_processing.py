@@ -7,34 +7,39 @@ import matplotlib.pyplot as plt
 
 
 def get_signal_psd(signal, bandType: BandType) -> float:
-    f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
-    # _, psd = scipy.signal.welch(signal, SAMPLING_RATE)
-    plt.figure()
-    plt.semilogy(f, psd, label=bandType.enum_type)
-    plt.xlabel('Frequency (Hz)')
-    plt.ylabel('Power Spectral Density')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-    scaled_low = int(bandType.low_frequency * 4)
-    scaled_high = int(bandType.high_frequency * 4)
+    # f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
+    f, psd = scipy.signal.welch(signal, SAMPLING_RATE)
+    # plt.figure()
+    # plt.semilogy(f, psd, label=bandType.enum_type)
+    # plt.xlabel('Frequency (Hz)')
+    # plt.ylabel('Power Spectral Density')
+    # plt.legend()
+    # plt.grid(True)
+    # plt.show()
+    scaled_low = int(bandType.low_frequency * 2)
+    scaled_high = int(bandType.high_frequency * 2)
     return np.max(psd[scaled_low: scaled_high])
-
+    # return psd[scaled_low:scaled_high].max()
 
 def get_approximate_entropy(signal) -> float:
-    r = 0.2 * np.std(signal)
+    # r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
+    r = 0.2 * np.std(sample)
     return approx_entropy(sample, 2, r)
 
 
 def get_sample_entropy(signal) -> float:
-    r = 0.2 * np.std(signal)
+    # r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
+    r = 0.2 * np.std(sample)
     return sampen(sample, 2, r)
 
 
 def get_root_mean_square(signal) -> float:
     return np.sqrt(np.mean([x ** 2 for x in signal]))
+    # _, psd = scipy.signal.welch(signal, SAMPLING_RATE, scaling='spectrum')
+    # rms_amplitude = np.sqrt(psd.max()) # peak hight din power spectrum
+    # return rms_amplitude
 
 
 def get_autocorrelation(signal) -> float:
@@ -47,6 +52,8 @@ def get_autocorrelation(signal) -> float:
 
     # autocorr = np.correlate(signal, signal, mode='full')
     # autocorr /= np.max(autocorr)
+    # autocorr = sm.tsa.acf(signal)
+    # return np.average(autocorr)
     autocorr = sm.tsa.acf(signal, nlags = len(signal)-1)
     return np.average(autocorr)
 
