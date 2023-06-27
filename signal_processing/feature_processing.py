@@ -52,10 +52,10 @@ def get_autocorrelation(signal) -> float:
 
     # autocorr = np.correlate(signal, signal, mode='full')
     # autocorr /= np.max(autocorr)
-    # autocorr = sm.tsa.acf(signal)
-    # return np.average(autocorr)
-    autocorr = sm.tsa.acf(signal, nlags = len(signal)-1)
+    autocorr = sm.tsa.acf(signal)
     return np.average(autocorr)
+    # autocorr = sm.tsa.acf(signal, nlags = len(signal)-1)
+    # return np.average(autocorr)
 
 def approx_entropy(signal, m, r) -> float:
 
