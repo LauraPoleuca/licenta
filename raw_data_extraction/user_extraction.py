@@ -3,6 +3,9 @@ from pyexcel_ods3 import get_data
 from data_access.models.user import User
 
 def get_users() -> List:
+    """
+    extracts the information about an user
+    """
     data = get_data("participant_questionnaire.ods")
     user_records = list(data["Sheet1"])
     user_records.pop(0)

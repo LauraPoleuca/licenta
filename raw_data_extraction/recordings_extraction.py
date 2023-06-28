@@ -13,6 +13,9 @@ from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, CHANNEL_INDE
 
 
 def get_recordings_multiprocessing(channel_list, trial_list) -> List:
+    """
+    
+    """
     optimized_arguments = get_multiprocessing_arguments(channel_list, trial_list)
     with mp.Pool() as pool:
         start = time.time()
@@ -23,12 +26,18 @@ def get_recordings_multiprocessing(channel_list, trial_list) -> List:
 
 
 def optimized_get_user_trial_recordings(file_name, trial_index, channel_list) -> List:
+    """
+    
+    """
     file_content = helper.read_binary_file(file_name)[DATA]
     username = helper.get_username_from_file(file_name).lower()
     return get_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 
 def get_user_recordings(file_name, channel_list) -> List:
+    """
+    
+    """
     file_content = helper.read_binary_file(file_name)[DATA]
     trial_indexes = list(range(40))
     username = helper.get_username_from_file(file_name).lower()
@@ -37,6 +46,9 @@ def get_user_recordings(file_name, channel_list) -> List:
 
 
 def get_user_trial_recordings(username, file_content, trial_index, channel_list) -> List:
+    """
+    
+    """
     print(f"Processing recordings for {username} - trial {trial_index}")
     channel_signals = file_content[trial_index]
     recordings = []
@@ -54,6 +66,9 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 
 def get_feature_list(raw_signal, band_type: BandType) -> List:
+    """
+    
+    """
     banded_signal = band_processor.filter(raw_signal, band_type)
     # plot_signal(banded_signal)
     #TODO: check if we continue to use the raw or the banded signal. banded looked (?) better
@@ -67,6 +82,9 @@ def get_feature_list(raw_signal, band_type: BandType) -> List:
 
 
 def get_multiprocessing_arguments(channel_list, trials: List[Trial] = []) -> zip:
+    """
+    
+    """
     # files = helper.get_user_input_files()
     users = []
     trial_indexes = []

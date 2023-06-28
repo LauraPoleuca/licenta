@@ -5,6 +5,9 @@ from data_access.models.trial import Trial
 
 
 def get_trials(quadrant_filtering: bool = False) -> List:
+    """
+    creates a list with Trial type objects
+    """
     files = helper.get_user_input_files()
     #TODO: temporary use for debugging, remove this!
     files = ['s01.dat', 's02.dat']
@@ -12,7 +15,10 @@ def get_trials(quadrant_filtering: bool = False) -> List:
     return sum(map(lambda file_name: get_user_trials(quadrant_filtering, file_name), files), [])
 
 
-def get_user_trials(quadrant_filtering: bool,file_name: str) ->List :
+def get_user_trials(quadrant_filtering: bool, file_name: str) -> List :
+    """
+    for a given user, creates a list with Trial type objects
+    """
     file_content = helper.read_binary_file(file_name)
     username = helper.get_username_from_file(file_name)
     labels = file_content[LABELS]
@@ -22,6 +28,9 @@ def get_user_trials(quadrant_filtering: bool,file_name: str) ->List :
     return trials
 
 def get_user_trial_quadrant(valence: float, arousal: float) -> int:
+    """
+    based on the values of valence and arousal, places the trial in a quadrant
+    """
     threshold_value = 4.5
     is_valence_high = valence > threshold_value
     is_arousal_high = arousal > threshold_value

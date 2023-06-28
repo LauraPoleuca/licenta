@@ -1,5 +1,6 @@
 import csv
 from dataclasses import dataclass
+from typing import List
 
 # TODO: change naming or drop the constants directly
 import utils.data_extraction_constants as extraction_constants
@@ -26,6 +27,9 @@ class TrialData:
 
 
 def read_file(file_name: str, channels: list[str]) -> List:
+    """
+    for a given user file and a list of channels, returns a list of trials that contains the data for the given channels
+    """
     trial_list: list[TrialData] = []
     file_data = helper.read_binary_file(file_name)
     for index, trial_content in enumerate(file_data["data"]):
@@ -39,6 +43,9 @@ def read_file(file_name: str, channels: list[str]) -> List:
 
 
 def write_user_files(user: str, trial_data_list: list[TrialData]) -> None:
+    """
+    creates a folder with the given user name and creates .csv files with the data from the given TrialData list
+    """
     helper.create_user_folder(user)
     for index, trial in enumerate(trial_data_list):
         file_name = helper.get_user_trial_filename(user, index)
@@ -46,6 +53,9 @@ def write_user_files(user: str, trial_data_list: list[TrialData]) -> None:
 
 
 def write_data_to_file(file_path: str, trial_data: TrialData) -> None:
+    """
+    in the given path it creates a .csv file containing the information from the given TrialData
+    """
     rows = map(
         lambda channel_data: [channel_data.channel_name] +
         list(map(lambda x: str(x), channel_data.channel_values)),
@@ -58,7 +68,10 @@ def write_data_to_file(file_path: str, trial_data: TrialData) -> None:
 
 
 def process_raw_data() -> None:
-    helper.reset_output_file()
+    """
+    resets the output folder and
+    """
+    helper.reset_output_folder()
     for file in helper.get_user_input_files():
         trials = read_file(file, signal_constants.CHANNEL_INDEXES.keys())
         write_user_files(helper.get_username_from_file(file), trials)
