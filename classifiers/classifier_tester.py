@@ -17,7 +17,7 @@ class ClassifierTester:
 
     def setup_tester(self, input_models: List[InputModel]):
         # model_features = list(map(lambda input_model: input_model.get_feature_list(), input_models))
-        self.train_data, self.test_data = train_test_split(input_models, test_size=0.2)
+        self.train_data, self.test_data = train_test_split(input_models, test_size=0.2, random_state=42)
         self.expected_outcomes = list(map(lambda input_model: input_model.outcome, self.test_data))
 
     def test_classifiers(self, classifiers: List[Classifier]):
