@@ -7,8 +7,7 @@ from data_access.models.input_model import InputModel
 
 class ClassifierTester:
 
-    # this class should let me do the comparisons i deserve. I should get the same dataset for a series
-    # of classifiers and then let every classifier do its thing, store the results
+    # this class should let me do the comparisons
     def __init__(self) -> None:
         self.classifier_data_dict: dict = {}
         self.train_data: List[InputModel] = []
@@ -17,7 +16,7 @@ class ClassifierTester:
 
     def setup_tester(self, input_models: List[InputModel]):
         # model_features = list(map(lambda input_model: input_model.get_feature_list(), input_models))
-        self.train_data, self.test_data = train_test_split(input_models, test_size=0.2, random_state=42)
+        self.train_data, self.test_data = train_test_split(input_models, test_size = 0.2, random_state = 42)
         self.expected_outcomes = list(map(lambda input_model: input_model.outcome, self.test_data))
 
     def test_classifiers(self, classifiers: List[Classifier]):
@@ -38,13 +37,13 @@ class ClassifierTester:
             classifier_data: ClassifierData = ClassifierData()
             for input_model in self.test_data:
                 predicition = classifier.predict(input_model)
-                classifier_data.test_evaulations.append(predicition)
+                classifier_data.test_evaluations.append(predicition)
             self.classifier_data_dict[classifier.name] = classifier_data
 
     def get_classifier_accuracy(self, classifier_id: str) -> float:
         classifier_data: ClassifierData = self.classifier_data_dict[classifier_id]
         correct_evaluations = 0
-        for index in range(len(classifier_data.test_evaulations)):
-            if self.expected_outcomes[index] == classifier_data.test_evaulations[index]:
+        for index in range(len(classifier_data.test_evaluations)):
+            if self.expected_outcomes[index] == classifier_data.test_evaluations[index]:
                 correct_evaluations += 1
         return correct_evaluations / len(self.expected_outcomes)

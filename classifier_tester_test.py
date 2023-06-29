@@ -2,7 +2,7 @@ from typing import List
 from classifiers.classifier_tester import ClassifierTester
 from classifiers.dependencies.discretizer import Discretizer
 from classifiers.gaussian_naive_bayes_classifier import GaussianNaiveBayesClasssifier
-from classifiers.kmeans import KMeansClassifier
+from classifiers.kmeans import KMeansClusterer
 from classifiers.naive_bayes_classifier import NaiveBayesClassifier
 from classifiers.neural_network import NeuralNetwork
 from classifiers.svm_classifier import SVMClassifier
@@ -11,7 +11,7 @@ from data_access.models.input_model import InputModel
 
 svm_classifier = SVMClassifier()
 nn_classifier = NeuralNetwork()
-kmeans_classifier = KMeansClassifier()
+kmeans_classifier = KMeansClusterer()
 gnb_classifier = GaussianNaiveBayesClasssifier()
 discretizer = Discretizer(10)
 nb_classifier = NaiveBayesClassifier(["ae", "se", "psd", "rms", "corr"], ["happy", "sad"], discretizer)

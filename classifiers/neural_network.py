@@ -17,7 +17,6 @@ class NeuralNetwork(Classifier):
         feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_list(), input_models)))
         outcomes = np.array(list(map(lambda input_model: input_model.outcome, input_models)))
         self.clf.fit(feature_lists, outcomes)
-        pass
 
     def predict(self, input_model: InputModel):
         return self.clf.predict([input_model.get_feature_list()])[0]

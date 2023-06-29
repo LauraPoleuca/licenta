@@ -6,7 +6,7 @@ from classifiers.base_classifier import Classifier
 from data_access.models.input_model import InputModel
 
 
-class KMeansClassifier(Classifier):
+class KMeansClusterer(Classifier):
 
     def __init__(self) -> None:
         self.name = "Kmeans classifier"
@@ -20,9 +20,3 @@ class KMeansClassifier(Classifier):
     def predict(self, input_model: InputModel):
         #TODO: don't know exactly if this is how the kmeans should be used
         return "happy" if self.clf.predict([input_model.get_feature_list()])[0] == 0 else "sad"
-
-    def export_trained_model(self):
-        pass
-
-    def import_trained_model(self):
-        pass

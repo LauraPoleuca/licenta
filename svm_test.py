@@ -10,12 +10,12 @@ feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_li
 # feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_sublist(), input_models)))
 outcomes = np.array(list(map(lambda input_model: input_model.outcome, input_models)))
 
-clf = svm.SVC(kernel="rbf", gamma=0.9999)
+clf = svm.SVC(kernel = "rbf", gamma = 0.9999)
 # clf = svm.SVC()
 asd = clf.fit(feature_lists, outcomes)
 
 fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+ax = fig.add_subplot(projection = '3d')
 
 
 predictions = clf.predict(feature_lists)

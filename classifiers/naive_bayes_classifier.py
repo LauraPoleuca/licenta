@@ -75,7 +75,7 @@ class NaiveBayesClassifier(Classifier):
     def __get_classification_index(self, class_name: str) -> int:
         return 0 if class_name == "happy" else 1
 
-    def __get_class_likelyhood(self, features_model: InputModel, class_name: str) -> float:
+    def __get_class_likelyhood(self, features_model: InputModel, ck: str) -> float:
         """
         Calculates the likelyhood of a given class to occur for a given features model.
         Based on the independency of the variables, this can be calculated as the product of
@@ -83,7 +83,7 @@ class NaiveBayesClassifier(Classifier):
             P(x|class) = number of cases in which x resulted in the class / number of times in which the class occurs
         NOTE: temporary, if the class did not occur in the dataset, the probability is zero. 
         """
-        class_index = self.__get_classification_index(class_name)
+        class_index = self.__get_classification_index(ck)
         prob = 1.0
         for feature in self.features:
             class_likelyhood = np.sum(self.train_data[feature][class_index])

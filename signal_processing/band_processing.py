@@ -24,7 +24,7 @@ def filter(eeg_signal: any, band: BandType) -> np.ndarray:
     return signal.lfilter(numerator, denominator, eeg_signal)
 
 
-def get_signal(username: str, file_name: str, channel_name: str) ->np.ndarray:
+def get_signal(username: str, file_name: str, channel_name: str) -> np.ndarray:
 #TODO: idk why this is still here it seems like it has no use
     file_path = helper.get_relative_file_path(
         extraction_constants.USER_OUTPUT_DIRECTORY_NAME, username, file_name)
