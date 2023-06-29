@@ -10,7 +10,7 @@ class NeuralNetwork(Classifier):
     def __init__(self) -> None:
         self.name = "Neural Network"
         #TODO: set random_state for reproductability
-        self.clf = MLPClassifier(solver='adam', alpha=1e-5, hidden_layer_sizes=(5, 5), random_state=42, max_iter=2000)
+        self.clf = MLPClassifier(solver = 'adam', alpha = 1e-5, hidden_layer_sizes = (5, 5), random_state = 42, max_iter = 2000)
 
     def train_classifier(self, input_models: List[InputModel]) -> None:
         super().train_classifier(input_models)
@@ -20,9 +20,3 @@ class NeuralNetwork(Classifier):
 
     def predict(self, input_model: InputModel):
         return self.clf.predict([input_model.get_feature_list()])[0]
-
-    def export_trained_model(self):
-        pass
-
-    def import_trained_model(self):
-        pass

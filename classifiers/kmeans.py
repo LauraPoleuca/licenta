@@ -9,7 +9,7 @@ from data_access.models.input_model import InputModel
 class KMeansClusterer(Classifier):
 
     def __init__(self) -> None:
-        self.name = "Kmeans classifier"
+        self.name = "Kmeans clusterer"
         self.clf = KMeans(n_clusters = 2)
 
     def train_classifier(self, input_models: List[InputModel]) -> None:

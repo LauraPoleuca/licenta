@@ -21,6 +21,4 @@ class SVMClassifier(Classifier):
     
     def predict(self, input_model: InputModel):
         return self.clf.predict([input_model.get_feature_list()])[0]
-    
-    def export_trained_model():
-        pass
+        
