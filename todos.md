@@ -1,5 +1,7 @@
 # Todos
 
+## General
+
 - [ ] Use classes for all unassigned methods (at least static ones)
 - [ ] Add comments
 - [X] Use typing in all methods
@@ -14,11 +16,17 @@
 - [ ] Check the naive classifier, I think P(Ck) is missing and should be calculated in order to be multiplied to the final product
 - [ ] Switch to using logs when calculating probabilities in bayes, since a 0 value for a bin means a final 0 probaility
 
-# UI 
+## UI
 
 - [ ] Setups Tab: .dat -> .csv, database population
-- [ ] Database preview 
+- [ ] Database preview
 - [ ] Graphing Tab: signal bands, histograms
 - [ ] Naive Bayes Classifier: train, predict
 - [ ] SVM
-- [ ] 
+
+## Input model transitioning
+
+- [X] Create new models
+- [ ] Create new scripts for adding and saving NewRecording in the database
+- [ ] Add new method which builds the NewRecording objects and saves them in the database in database_population.py
+- [ ] Adjust rest of the code (needs more elaboration)
