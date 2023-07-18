@@ -37,14 +37,31 @@ CREATE_RECORDINGS_TABLE_SCRIPT = "CREATE TABLE recordings (\
     PRIMARY KEY (user_id, trial_id, channel_id),\
     FOREIGN KEY (user_id, trial_id) REFERENCES trials (user_id, trial_id))"
 
+CREATE_NEW_RECORDINGS_TABLE_SCRIPT = "CREATE TABLE new_recordings (\
+    user_id TEXT,\
+    trial_id INTEGER,\
+    channel_id TEXT,\
+    bandth_type TEXT,\
+    ae TEXT,\
+    se TEXT,\
+    psd TEXT,\
+    rms TEXT,\
+    corr TEXT,\
+    PRIMARY KEY (user_id, trial_id, channel_id, bandth_type),\
+    FOREIGN KEY (user_id, trial_id) REFERENCES trials (user_id, trial_id))"
+
 INSERT_RANGE_TABLE_USERS = "INSERT INTO users VALUES(?, ?)"
 
 INSERT_RANGE_TABLE_TRIALS = "INSERT INTO trials VALUES(?, ?, ?, ?, ?)"
 
 INSERT_RANGE_TABLE_RECORDINGS = "INSERT INTO recordings VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
+INSERT_NEW_RANGE_TABLE_RECORDINGS = "INSERT INTO new_recordings VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"
+
 SELECT_USERS = "SELECT * FROM USERS"
 
 SELECT_TRIALS = "SELECT * FROM TRIALS"
 
 SELECT_RECORDINGS = "SELECT * FROM RECORDINGS"
+
+SELECT_NEW_RECORDINGS = "SELECT * FROM NEW_RECORDINGS"

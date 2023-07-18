@@ -7,6 +7,7 @@ from classifiers.base_classifier import Classifier
 
 from classifiers.dependencies.discretizer import Discretizer
 from data_access.models.input_model import InputModel
+from data_access.models.new_input_model import NewInputModel
 from utils.data_extraction_constants import TRAINED_MODEL_FILE
 
 

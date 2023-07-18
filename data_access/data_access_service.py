@@ -2,8 +2,11 @@ import sqlite3
 import os
 from typing import List
 from data_access.models.input_model import InputModel
+from data_access.models.new_input_model import NewInputModel
+from data_access.models.new_recording import NewRecording
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
+from data_access.models.user import User
 
 import utils.database_constants as dbc
 from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, GAMMA_BAND_TYPE, BandType
@@ -25,6 +28,7 @@ class DataAccessService:
         cursor.execute(dbc.CREATE_USER_TABLE_SCRIPT)
         cursor.execute(dbc.CREATE_TRIAL_TABLE_SCRIPT)
         cursor.execute(dbc.CREATE_RECORDINGS_TABLE_SCRIPT)
+        cursor.execute(dbc.CREATE_NEW_RECORDINGS_TABLE_SCRIPT)
         cursor.close()
 
     
@@ -44,7 +48,7 @@ class DataAccessService:
         retrieves data from db
             - inputs: sql select query, model type that needs to be extracted from the db
             - outputs: list of objects of entity_class type
-        """
+        """
         cursor = self.db_connection.cursor()
         cursor.execute(select_script)
         entity_tuples = cursor.fetchall()
@@ -75,6 +79,25 @@ class DataAccessService:
                 input_models.append(InputModel.from_list(recording.alpha_wave_features, trial_outcome, ALPHA_BAND_TYPE))
                 input_models.append(InputModel.from_list(recording.beta_wave_features, trial_outcome, BETA_BAND_TYPE))
                 input_models.append(InputModel.from_list(recording.gamma_wave_features, trial_outcome, GAMMA_BAND_TYPE))
+        return input_models
+
+    def generate_new_input_models(self) -> List:
+        """
+        generates NewInputModel objects using the data from db
+            - inputs: None
+            - outputs: list of objects of NewInputModel type
+        """
+        users = self.retrieve_range_data(dbc.SELECT_USERS, User)
+        trials = self.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
+        recordings = self.retrieve_range_data(dbc.SELECT_NEW_RECORDINGS, NewRecording)
+        input_models: List[NewInputModel] = []
+
+        for user in users:
+            for trial in trials:
+                trial_outcome = "happy" if trial.quadrant == 1 else "sad"
+                input_model_recordings: List[NewRecording] = list(filter(lambda rec: rec.trial_id == trial.trial_id and rec.user_id == user.user_id, recordings))
+                input_model = NewInputModel(input_model_recordings, trial_outcome)
+                input_models.append(input_model)
         return input_models
 
     def __get_entities_tuple(self, entities) -> List:

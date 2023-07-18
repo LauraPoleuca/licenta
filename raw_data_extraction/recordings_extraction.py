@@ -1,6 +1,7 @@
 import multiprocessing as mp
 import time
 from typing import List
+from data_access.models.new_recording import NewRecording
 
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
@@ -31,18 +32,16 @@ def optimized_get_user_trial_recordings(file_name, trial_index, channel_list) ->
     """
     file_content = helper.read_binary_file(file_name)[DATA]
     username = helper.get_username_from_file(file_name).lower()
-    return get_user_trial_recordings(username, file_content, trial_index, channel_list)
+    #return get_user_trial_recordings(username, file_content, trial_index, channel_list)
+    return get_new_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 
-def get_user_recordings(file_name, channel_list) -> List:
-    """
-    
-    """
-    file_content = helper.read_binary_file(file_name)[DATA]
-    trial_indexes = list(range(40))
-    username = helper.get_username_from_file(file_name).lower()
-    print(f"Processing file {file_name}")
-    return sum(map(lambda trial_index: get_user_trial_recordings(username, file_content, trial_index, channel_list), trial_indexes), [])
+#def get_user_recordings(file_name, channel_list) -> List:
+    #file_content = helper.read_binary_file(file_name)[DATA]
+    #trial_indexes = list(range(40))
+    #username = helper.get_username_from_file(file_name).lower()
+    #print(f"Processing file {file_name}")
+    #return sum(map(lambda trial_index: get_user_trial_recordings(username, file_content, trial_index, channel_list), trial_indexes), [])
 
 
 def get_user_trial_recordings(username, file_content, trial_index, channel_list) -> List:
@@ -62,6 +61,26 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
         gamma_features = get_feature_list(raw_channel_signal, GAMMA_BAND_TYPE)
         recording = Recording(channel, username, trial_index + 1, alpha_features, beta_features, gamma_features)
         recordings.append(recording)
+    return recordings
+
+def get_new_user_trial_recordings(username, file_content, trial_index, channel_list) -> List:
+    """
+    
+    """
+    print(f"Processing recordings for {username} - trial {trial_index}")
+    channel_signals = file_content[trial_index]
+    recordings = []
+    for channel in channel_list:
+        #!!! I think that the channel index might be wrong, as the values in the CHANNEL_INDEXES dict
+        # start at 1 (CHANNEL COUNT), but the data should be retreived using a CHANNEL INDEX 
+        channel_index = CHANNEL_INDEXES[channel] - 1
+        raw_channel_signal = channel_signals[channel_index]
+        alpha_features = get_feature_list(raw_channel_signal, ALPHA_BAND_TYPE)
+        beta_features = get_feature_list(raw_channel_signal, BETA_BAND_TYPE)
+        alpha_recording = NewRecording(username, trial_index + 1, channel, ALPHA_BAND_TYPE , alpha_features)
+        beta_recording = NewRecording(username, trial_index + 1, channel, BETA_BAND_TYPE, beta_features)
+        recordings.append(alpha_recording)
+        recordings.append(beta_recording)
     return recordings
 
 
