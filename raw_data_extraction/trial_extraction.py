@@ -9,23 +9,25 @@ def get_trials(quadrant_filtering: bool = False) -> List:
     creates a list with Trial type objects
     """
     files = helper.get_user_input_files()
-    #TODO: temporary use for debugging, remove this!
+    # TODO: temporary use for debugging, remove this!
     files = ['s01.dat']
     # files = ['s01.dat']
     return sum(map(lambda file_name: get_user_trials(quadrant_filtering, file_name), files), [])
 
 
-def get_user_trials(quadrant_filtering: bool, file_name: str) -> List :
+def get_user_trials(quadrant_filtering: bool, file_name: str) -> List:
     """
     for a given user, creates a list with Trial type objects
     """
     file_content = helper.read_binary_file(file_name)
     username = helper.get_username_from_file(file_name)
     labels = file_content[LABELS]
-    trials = list(map(lambda trial_index, label_set: Trial(username, trial_index + 1, label_set[0], label_set[1], get_user_trial_quadrant(label_set[0], label_set[1])), range(len(labels)), labels))
+    trials = list(map(lambda trial_index, label_set: Trial(username, trial_index + 1,
+                  label_set[0], label_set[1], get_user_trial_quadrant(label_set[0], label_set[1])), range(len(labels)), labels))
     if quadrant_filtering:
         trials = list(filter(lambda t: t.quadrant in [1, 3], trials))
     return trials
+
 
 def get_user_trial_quadrant(valence: float, arousal: float) -> int:
     """

@@ -20,14 +20,14 @@ def insert_users(data_access_service: DataAccessService) -> None:
 
 
 def insert_trials(data_access_service: DataAccessService) -> None:
-    trials = get_trials(quadrant_filtering = True)
+    trials = get_trials(quadrant_filtering=True)
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_TRIALS, trials)
 
 
 def insert_recordings(data_access_service: DataAccessService) -> None:
     trials = data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
-    #recordings = get_recordings_multiprocessing(["Fp1"], trials)
-    #data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
+    # recordings = get_recordings_multiprocessing(["Fp1"], trials)
+    # data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
     recordings = get_recordings_multiprocessing(list(CHANNEL_INDEXES.keys()), trials)
     data_access_service.insert_range_data(dbc.INSERT_NEW_RANGE_TABLE_RECORDINGS, recordings)
 

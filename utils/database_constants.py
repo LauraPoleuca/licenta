@@ -41,13 +41,13 @@ CREATE_NEW_RECORDINGS_TABLE_SCRIPT = "CREATE TABLE new_recordings (\
     user_id TEXT,\
     trial_id INTEGER,\
     channel_id TEXT,\
-    bandth_type TEXT,\
+    band_type TEXT,\
     ae TEXT,\
     se TEXT,\
     psd TEXT,\
     rms TEXT,\
     corr TEXT,\
-    PRIMARY KEY (user_id, trial_id, channel_id, bandth_type),\
+    PRIMARY KEY (user_id, trial_id, channel_id, band_type),\
     FOREIGN KEY (user_id, trial_id) REFERENCES trials (user_id, trial_id))"
 
 INSERT_RANGE_TABLE_USERS = "INSERT INTO users VALUES(?, ?)"

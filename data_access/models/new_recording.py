@@ -14,7 +14,7 @@ class NewRecording(BaseModel):
         self.user_id: str = user_id
         self.trial_id: int = trial_id
         self.channel_id: str = channel_id
-        self.band_type = band_type
+        self.band_type: str = band_type
         self.features = features
 
     def get_tuple(self) -> tuple:

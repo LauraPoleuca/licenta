@@ -28,6 +28,7 @@ FILTER_ORDER = 5
 SAMPLING_LOWER_BOUND = SAMPLING_RATE * 10
 SAMPLING_HIGHER_BOUND = SAMPLING_RATE * 16
 
+
 class BandEnum(Enum):
     ALPHA = 1,
     BETA = 2,
@@ -35,12 +36,13 @@ class BandEnum(Enum):
 
 
 class BandType:
-    def __init__(self, band_enum: BandEnum, low_frequency: float, high_frequency: float) -> None:
+    def __init__(self, name: str, band_enum: BandEnum, low_frequency: float, high_frequency: float) -> None:
+        self.name = name
         self.enum_type = band_enum
         self.low_frequency = low_frequency
         self.high_frequency = high_frequency
 
 
-ALPHA_BAND_TYPE = BandType(BandEnum.ALPHA, 7.5, 12.5)
-BETA_BAND_TYPE = BandType(BandEnum.BETA, 13.0, 30.0)
-GAMMA_BAND_TYPE = BandType(BandEnum.GAMMA, 30.0, 63.5)
+ALPHA_BAND_TYPE = BandType("alpha", BandEnum.ALPHA, 7.5, 12.5)
+BETA_BAND_TYPE = BandType("beta", BandEnum.BETA, 13.0, 30.0)
+GAMMA_BAND_TYPE = BandType("gamma", BandEnum.GAMMA, 30.0, 63.5)
