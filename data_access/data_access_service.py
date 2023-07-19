@@ -86,7 +86,7 @@ class DataAccessService:
         generates NewInputModel objects using the data from db
             - inputs: None
             - outputs: list of objects of NewInputModel type
-        """
+        """
         users = self.retrieve_range_data(dbc.SELECT_USERS, User)
         trials = self.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
         recordings = self.retrieve_range_data(dbc.SELECT_NEW_RECORDINGS, NewRecording)

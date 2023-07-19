@@ -22,3 +22,15 @@ class NewRecording(BaseModel):
         returns a tuple based on a NewRecording object
         """
         return (self.user_id, self.trial_id, self.channel_id, self.band_type, *self.features)
+
+    @classmethod
+    def from_entity_tuple(cls, entity_tuple: tuple) -> None:
+        return cls(entity_tuple[0],
+                   entity_tuple[1],
+                   entity_tuple[2],
+                   entity_tuple[3],
+                   [float(entity_tuple[4]),
+                   float(entity_tuple[5]),
+                   float(entity_tuple[6]),
+                   float(entity_tuple[7]),
+                   float(entity_tuple[8])])

@@ -3,21 +3,26 @@ from sklearn.model_selection import train_test_split
 from classifiers.base_classifier import Classifier
 from classifiers.dependencies.classifier_data import ClassifierData
 from data_access.models.input_model import InputModel
-
+from data_access.models.new_input_model import NewInputModel
+import numpy as np
 
 class ClassifierTester:
 
     # this class should let me do the comparisons
     def __init__(self) -> None:
         self.classifier_data_dict: dict = {}
-        self.train_data: List[InputModel] = []
-        self.test_data: List[InputModel] = []
+        self.train_data: List[NewInputModel] = []
+        self.test_data: List[NewInputModel] = []
         self.expected_outcomes: List[str] = []
 
     def setup_tester(self, input_models: List[InputModel]):
         # model_features = list(map(lambda input_model: input_model.get_feature_list(), input_models))
-        self.train_data, self.test_data = train_test_split(input_models, test_size = 0.2, random_state = 42)
+        #self.train_data, self.test_data = train_test_split(input_models, test_size = 0.2, random_state = 42)
+        self.train_data, self.test_data = np.split(input_models, [int(0.8 * len(input_models))])
+        self.train_data = list(self.train_data)
+        self.test_data = list(self.test_data)
         self.expected_outcomes = list(map(lambda input_model: input_model.outcome, self.test_data))
+
 
     def test_classifiers(self, classifiers: List[Classifier]):
         self.train_classifiers(classifiers)

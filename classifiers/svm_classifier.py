@@ -16,6 +16,7 @@ class SVMClassifier(Classifier):
 
     def train_classifier(self, input_models: List[NewInputModel]) -> None:
         super().train_classifier(input_models)
+        x = list(map(lambda input_model: input_model.get_feature_list(), input_models))
         feature_lists: List[List[float]] = np.array(list(map(lambda input_model: input_model.get_feature_list(), input_models)))
         outcomes: List[str] = np.array(list(map(lambda input_model: input_model.outcome, input_models)))
         self.clf.fit(feature_lists, outcomes)
