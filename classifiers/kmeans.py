@@ -4,7 +4,6 @@ import numpy as np
 from sklearn.cluster import KMeans
 from classifiers.base_classifier import Classifier
 from data_access.models.input_model import InputModel
-from data_access.models.new_input_model import NewInputModel
 
 
 class KMeansClusterer(Classifier):
@@ -13,11 +12,11 @@ class KMeansClusterer(Classifier):
         self.name = "Kmeans clusterer"
         self.clf = KMeans(n_clusters = 2)
 
-    def train_classifier(self, input_models: List[NewInputModel]) -> None:
+    def train_classifier(self, input_models: List[InputModel]) -> None:
         super().train_classifier(input_models)
         feature_lists = np.array(list(map(lambda input_model: input_model.get_feature_list(), input_models)))
         self.clf.fit(feature_lists)
 
-    def predict(self, input_model: NewInputModel):
+    def predict(self, input_model: InputModel):
         #TODO: don't know exactly if this is how the kmeans should be used
         return "happy" if self.clf.predict([input_model.get_feature_list()])[0] == 0 else "sad"

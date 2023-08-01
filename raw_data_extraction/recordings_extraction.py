@@ -1,8 +1,6 @@
 import multiprocessing as mp
 import time
 from typing import List
-from data_access.models.new_recording import NewRecording
-
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
 from graphing.signal_plotter import plot_signal
@@ -78,8 +76,8 @@ def get_new_user_trial_recordings(username, file_content, trial_index, channel_l
         raw_channel_signal = channel_signals[channel_index]
         alpha_features = get_feature_list(raw_channel_signal, ALPHA_BAND_TYPE)
         beta_features = get_feature_list(raw_channel_signal, BETA_BAND_TYPE)
-        alpha_recording = NewRecording(username, trial_index + 1, channel, ALPHA_BAND_TYPE.name, alpha_features)
-        beta_recording = NewRecording(username, trial_index + 1, channel, BETA_BAND_TYPE.name, beta_features)
+        alpha_recording = Recording(username, trial_index + 1, channel, ALPHA_BAND_TYPE.name, alpha_features)
+        beta_recording = Recording(username, trial_index + 1, channel, BETA_BAND_TYPE.name, beta_features)
         recordings.append(alpha_recording)
         recordings.append(beta_recording)
     return recordings

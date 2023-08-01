@@ -1,38 +1,24 @@
-from __future__ import annotations
+from typing import List
 
-import numpy as np
-from typing import List, Type
-
-from utils.signal_constants import BandType
+from data_access.models.recording import Recording
 
 
 class InputModel:
+    """
+    Represents the new input model. It essentially contains all the recordings associated with a trial
+    (one newInputModel per user_id-trial_id), as well as the outcome of the trial. There are 20 x 2 recordings expected
+    in the current siutuation but maybe that will change. 
+    """
 
-    # ca si chestie, mi am dat seama ca faptul ca probabilitatea
-    # pentru clasare nu ar trebui sa conteze. din cauza ca avem chestia aia
-    # P(xi|Ck), probabilitatea de a fi o anumita valoare nu depinde de clasa Ck
-    # la fel si banda de semnal.
-    def __init__(self, ae: float, se: float, psd: float, rms: float, corr: float, outcome: str, band: BandType = None) -> None:
-        self.ae: float = ae
-        self.se: float = se
-        self.psd: float = psd
-        self.rms: float = rms
-        self.corr: float = corr
+    def __init__(self, recordings: List[Recording], outcome: str) -> None:
+        self.recordings: List[Recording] = recordings
         self.outcome: str = outcome
-        self.band = band
 
-    @classmethod
-    def from_list(cls, feature_list: List, outcome: str, band: BandType) -> InputModel:
+    def get_feature_list(self) -> List[float]:
         """
-        acts as a constructor for an InputModel
+        Compiles all the features from all recordings into a single list that can be used for the actual training of the classifiers
         """
-        return cls(feature_list[0], feature_list[1], feature_list[2], feature_list[3], feature_list[4], outcome, band)
-    
-    def get_feature_list(self) -> np.ndarray:
-        """
-        converts the InputModel into an array of values
-        """
-        return np.array([self.ae, self.se, self.psd, self.rms, self.corr])
-    
-    def get_feature_sublist(self) -> np.ndarray:
-        return np.array([self.ae, self.psd, self.rms])
+        features: List[float] = []
+        for rec in self.recordings:
+            features += rec.features
+        return features
