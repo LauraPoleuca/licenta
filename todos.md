@@ -30,3 +30,11 @@
 - [ ] Create new scripts for adding and saving NewRecording in the database
 - [ ] Add new method which builds the NewRecording objects and saves them in the database in database_population.py
 - [ ] Adjust rest of the code (needs more elaboration)
+
+## Classifier metrics
+The app needs a way to record the actual classification results for each evaluation and each classifier. 
+The evaluation results need to be accounted for not inside the classifier. 
+It would be good to record the accuracy of the prediction as well for the NBC.
+ - [ ] Add method to evaluate based on a list of input models, not only one model
+ - [ ] Evaluate results into confusion matrix
+ - [ ] Calculate stats within the ClassifierData object

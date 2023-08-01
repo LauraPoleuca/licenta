@@ -24,22 +24,36 @@ class ClassifierTester:
         self.expected_outcomes = list(map(lambda input_model: input_model.outcome, self.test_data))
 
 
-    def test_classifiers(self, classifiers: List[Classifier]):
+    # def test_classifiers(self, classifiers: List[Classifier]) -> dict:
+    #     self.train_classifiers(classifiers)
+    #     self.fill_classifier_data(classifiers)
+    #     results = {}
+    #     for classifier in classifiers:
+    #         results[classifier.name] = self.get_classifier_accuracy(classifier.name)
+    #     return results
+
+    def get_classifiers_results(self, classifiers: List[Classifier]) -> dict:
         self.train_classifiers(classifiers)
-        self.fill_classifier_data(classifiers)
+        self.fill_classifier_evaluations(classifiers)
         results = {}
-        for classifier in classifiers:
-            results[classifier.name] = self.get_classifier_accuracy(classifier.name)
+        # for classifier in classifiers:
+        #     results[classifier.name] = self.get_classifier_accuracy(classifier.name)
+        for classifier_name in self.classifier_data_dict:
+            results[classifier_name] = self.classifier_data_dict[classifier_name].calculate_metrics(self.expected_outcomes)
         return results
         
     def train_classifiers(self, classifiers: List[Classifier]):
         for classifier in classifiers:
             classifier.train_classifier(self.train_data)
 
-    def fill_classifier_data(self, classifiers: List[Classifier]):
+    def fill_classifier_evaluations(self, classifiers: List[Classifier]):
+        """
+        Sets up a classifier - classifier data dictionary.
+        The ClassifierData object currently hold only a list of "test_evaluations"
+        """
         self.classifier_data_dict = {}
         for classifier in classifiers:
-            classifier_data: ClassifierData = ClassifierData()
+            classifier_data: ClassifierData = ClassifierData(classifier.name)
             for input_model in self.test_data:
                 predicition = classifier.predict(input_model)
                 classifier_data.test_evaluations.append(predicition)

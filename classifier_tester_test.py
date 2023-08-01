@@ -26,6 +26,10 @@ input_models: List[NewInputModel] = data_access.generate_new_input_models()
 classifier_tester.setup_tester(input_models)
 
 #this can sometimes crash because the intervals are set up in such a way that the values did not get taken into account and the intervals are too small 
-results = classifier_tester.test_classifiers(classifiers)
+# results = classifier_tester.test_classifiers(classifiers)
+# for key in results:
+#     print(key, results[key])
+
+results = classifier_tester.get_classifiers_results(classifiers)
 for key in results:
     print(key, results[key])
