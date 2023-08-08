@@ -3,7 +3,6 @@ from sklearn.model_selection import train_test_split
 from classifiers.base_classifier import Classifier
 from classifiers.dependencies.classifier_data import ClassifierData
 from data_access.models.input_model import InputModel
-from data_access.models.new_input_model import NewInputModel
 import numpy as np
 
 class ClassifierTester:
@@ -11,8 +10,8 @@ class ClassifierTester:
     # this class should let me do the comparisons
     def __init__(self) -> None:
         self.classifier_data_dict: dict = {}
-        self.train_data: List[NewInputModel] = []
-        self.test_data: List[NewInputModel] = []
+        self.train_data: List[InputModel] = []
+        self.test_data: List[InputModel] = []
         self.expected_outcomes: List[str] = []
 
     def setup_tester(self, input_models: List[InputModel]):
