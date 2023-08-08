@@ -32,4 +32,9 @@ classifier_tester.setup_tester(input_models)
 
 results = classifier_tester.get_classifiers_results(classifiers)
 for key in results:
-    print(key, results[key])
+    print(key)
+    print("\t Accuracy:", results[key][0])
+    print("\t Precision:", results[key][1])
+    print("\t Recall:", results[key][2])
+    print("\t F1 score:", results[key][3])
+    print("\t Balanced accuracy:", results[key][4])
