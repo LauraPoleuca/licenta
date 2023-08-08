@@ -7,6 +7,7 @@ from classifiers.base_classifier import Classifier
 
 from classifiers.dependencies.discretizer import Discretizer
 from data_access.models.input_model import InputModel
+from data_access.models.recording import Recording
 from utils.data_extraction_constants import TRAINED_MODEL_FILE
 
 
@@ -34,8 +35,12 @@ class NaiveBayesClassifier(Classifier):
             # happy index 0, sad index 1
             class_index = self.__get_classification_index(data.outcome)
             for feature_name in self.features:
+                args = feature_name.split("-")
                 feature_interval = self.intervals[feature_name]
-                feature_value = data.__dict__[feature_name]
+                # feature_value = data.__dict__[feature_name]
+                # need to get the feature value from the input model. based on tbe channel id and band i should be able to find the recording
+                recording: Recording = list(filter(lambda r: r.channel_id == args[0] and r.band_type == args[1], data.recordings))[0]
+                feature_value = recording.get_feature_value_by_name(args[2])
                 bin_index = self.discretizer.get_bin_index(
                     feature_interval[0], feature_interval[1], feature_value)
                 self.train_data[feature_name][class_index, bin_index] += 1
@@ -88,7 +93,10 @@ class NaiveBayesClassifier(Classifier):
         for feature in self.features:
             class_likelyhood = np.sum(self.train_data[feature][class_index])
             feature_interval = self.intervals[feature]
-            feature_value = features_model.__dict__[feature]
+            # feature_value = features_model.__dict__[feature]
+            args = feature.split("-")
+            recording: Recording = list(filter(lambda r: r.channel_id == args[0] and r.band_type == args[1], features_model.recordings))[0]
+            feature_value = recording.get_feature_value_by_name(args[2])
             bin_index = self.discretizer.get_bin_index(
                 feature_interval[0], feature_interval[1], feature_value)
             if class_likelyhood == 0:
@@ -109,10 +117,28 @@ class NaiveBayesClassifier(Classifier):
         intervals: dict = {}
         # for gods sake please make sure you set the self.features correctly
         for feature_name in self.features:
-            feature_values: List[float] = list(
-                map(lambda data: data.__dict__[feature_name], dataset))
-            intervals[feature_name] = (
-                np.min(feature_values), np.max(feature_values))
+            # normally, for each feature, each input model would have a value. This is the same now, but it is difficult to identify which property to use
+            # x-y-z name would result in 20 * x + 2 * y + z as the index in the greater model feature list (not sure on the formula but something of the like)
+            # x shows channel, so we could search by that. 
+            # y shows band, that can also be used. i am expecting an input model per trial.
+            # feature_values: List[float] = list(
+            #     map(lambda data: data.__dict__[feature_name], dataset))
+            args = feature_name.split("-")
+            # # from each input model get its list of recordings
+            # dataset_recordings_list: List[List[Recording]] = list(map(lambda d: d.recordings, dataset))
+            # # in each list of recordings i am expecting to be one recording which matches the channel id and band type. get those elements
+            # # list of lists of recordings -> list of recordings
+            # matching_recordings: List[Recording] = list(map(lambda lst: lst, matching_recordings))
+            index = 0
+            # feature_values = list(map(lambda r: r.features[index], matching_recordings))
+
+            feature_values = []
+            for input_model in dataset:
+                recordings = input_model.recordings
+                x: List[Recording] = list(filter(lambda r: r.channel_id == args[0] and r.band_type == args[1], recordings))
+                x: Recording = x[0]
+                feature_values.append(x.get_feature_value_by_name(args[2]))
+            intervals[feature_name] = (np.min(feature_values), np.max(feature_values))
         return intervals
 
     def __initialize_feature_frequency_table(self) -> np.ndarray:
