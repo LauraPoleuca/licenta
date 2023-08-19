@@ -10,7 +10,7 @@ class KMeansClusterer(Classifier):
 
     def __init__(self) -> None:
         self.name = "Kmeans clusterer"
-        self.clf = KMeans(n_clusters = 2)
+        self.clf = KMeans(n_clusters = 2, n_init='auto')
 
     def train_classifier(self, input_models: List[InputModel]) -> None:
         super().train_classifier(input_models)

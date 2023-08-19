@@ -10,7 +10,7 @@ class SVMClassifier(Classifier):
 
     def __init__(self) -> None:
         super().__init__()
-        self.name = "svm"
+        self.name = "SVM"
         self.clf = svm.SVC(kernel = "rbf", gamma = 0.9999)
 
     def train_classifier(self, input_models: List[InputModel]) -> None:

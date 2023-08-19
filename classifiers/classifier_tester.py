@@ -14,10 +14,10 @@ class ClassifierTester:
         self.test_data: List[InputModel] = []
         self.expected_outcomes: List[str] = []
 
-    def setup_tester(self, input_models: List[InputModel]):
+    def setup_tester(self, input_models: List[InputModel], random_state = 42):
         # model_features = list(map(lambda input_model: input_model.get_feature_list(), input_models))
-        #self.train_data, self.test_data = train_test_split(input_models, test_size = 0.2, random_state = 42)
-        self.train_data, self.test_data = np.split(input_models, [int(0.8 * len(input_models))])
+        self.train_data, self.test_data = train_test_split(input_models, test_size = 0.2, random_state = random_state)
+        # self.train_data, self.test_data = np.split(input_models, [int(0.8 * len(input_models))])
         self.train_data = list(self.train_data)
         self.test_data = list(self.test_data)
         self.expected_outcomes = list(map(lambda input_model: input_model.outcome, self.test_data))
@@ -57,11 +57,3 @@ class ClassifierTester:
                 predicition = classifier.predict(input_model)
                 classifier_data.test_evaluations.append(predicition)
             self.classifier_data_dict[classifier.name] = classifier_data
-
-    def get_classifier_accuracy(self, classifier_id: str) -> float:
-        classifier_data: ClassifierData = self.classifier_data_dict[classifier_id]
-        correct_evaluations = 0
-        for index in range(len(classifier_data.test_evaluations)):
-            if self.expected_outcomes[index] == classifier_data.test_evaluations[index]:
-                correct_evaluations += 1
-        return correct_evaluations / len(self.expected_outcomes)

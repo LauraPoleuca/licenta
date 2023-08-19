@@ -30,7 +30,7 @@ def insert_recordings(data_access_service: DataAccessService) -> None:
     data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
 
 
-def main():
+def populate_database():
     start = time.time()
     os.remove(dbc.DATABASE_PATH)
     data_access_service = DataAccessService()
@@ -43,5 +43,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    populate_database()
     print("Database was populated successfully")
