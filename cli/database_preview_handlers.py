@@ -10,6 +10,7 @@ from data_access.models.user import User
 
 import utils.database_constants as dbc
 
+
 def get_database_preview_options() -> List[str]:
     return [
         DatabasePreviewOptions.Users,
@@ -27,7 +28,8 @@ def handle_database_preview():
             handle_preview_trials()
         case DatabasePreviewOptions.Recordings:
             handle_preview_recordings()
-    
+
+
 def handle_preview_users():
     data_access_service = DataAccessService()
     users = data_access_service.retrieve_range_data(dbc.SELECT_USERS, User)
@@ -40,11 +42,20 @@ def handle_preview_trials():
     trials = data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
     trials.sort(key=lambda t: (t.user_id, t.trial_id))
     trials_list = list(map(lambda t: list(t.get_tuple()), trials))
-    print(tabulate.tabulate(trials_list, headers=["User id", "Trial id", "Valence", "Arousal", "Quadrant"], tablefmt=TABLE_FORMAT))
+    print(
+        tabulate.tabulate(
+            trials_list, headers=["User id", "Trial id", "Valence", "Arousal", "Quadrant"],
+            tablefmt=TABLE_FORMAT))
+
 
 def handle_preview_recordings():
     data_access_service = DataAccessService()
     recordings = data_access_service.retrieve_range_data(dbc.SELECT_RECORDINGS, Recording)
     recordings.sort(key=lambda r: (r.user_id, r.trial_id, r.channel_id, r.band_type))
     recordings_list = list(map(lambda r: list(r.get_tuple()), recordings))[:500]
-    print(tabulate.tabulate(recordings_list, headers=["User id", "Trial id", "Channel id", "Band type", "Approx. entropy", "Sample entropy", "PSD", "RMS", "Auto correlation"], tablefmt=TABLE_FORMAT))
+    print(
+        tabulate.tabulate(
+            recordings_list,
+            headers=["User id", "Trial id", "Channel id", "Band type", "Approx. entropy", "Sample entropy", "PSD",
+                     "RMS", "Auto correlation"],
+            tablefmt=TABLE_FORMAT))
