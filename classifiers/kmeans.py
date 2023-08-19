@@ -10,7 +10,7 @@ class KMeansClusterer(Classifier):
 
     def __init__(self) -> None:
         self.name = "Kmeans clusterer"
-        self.clf = KMeans(n_clusters = 2, n_init='auto')
+        self.clf = KMeans(n_clusters=2, n_init='auto')
 
     def train_classifier(self, input_models: List[InputModel]) -> None:
         super().train_classifier(input_models)
@@ -18,5 +18,5 @@ class KMeansClusterer(Classifier):
         self.clf.fit(feature_lists)
 
     def predict(self, input_model: InputModel):
-        #TODO: don't know exactly if this is how the kmeans should be used
+        # TODO: don't know exactly if this is how the kmeans should be used
         return "happy" if self.clf.predict([input_model.get_feature_list()])[0] == 0 else "sad"

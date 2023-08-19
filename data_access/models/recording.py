@@ -34,10 +34,9 @@ class Recording(BaseModel):
                    float(entity_tuple[6]),
                    float(entity_tuple[7]),
                    float(entity_tuple[8])])
-    
-    # I don't like this but here we go
+
     def get_feature_value_by_name(self, name: str) -> float:
-        index = -1
+        index = None
         if name == "ae":
             index = 0
         elif name == "se":

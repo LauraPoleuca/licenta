@@ -6,6 +6,7 @@ from data_access.models.input_model import InputModel
 
 
 def plot_input_models(input_models: List[InputModel]):
+    # TODO: recheck these
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     for input_model in input_models:

@@ -2,6 +2,7 @@ from typing import List
 from pyexcel_ods3 import get_data
 from data_access.models.user import User
 
+
 def get_users() -> List:
     """
     extracts the information about an user

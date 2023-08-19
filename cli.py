@@ -17,6 +17,7 @@ def get_menu_options() -> List[str]:
         MenuOptions.EXIT
     ]
 
+
 def handle_option(option: str) -> None:
     match option:
         case MenuOptions.DATA_GENERATION:
@@ -29,7 +30,7 @@ def handle_option(option: str) -> None:
             handle_classifiers()
         case _:
             pass
-            
+
 
 def main():
     while True:
@@ -38,6 +39,7 @@ def main():
         if option == MenuOptions.EXIT:
             break
     print("Ending program")
+
 
 if __name__ == "__main__":
     main()

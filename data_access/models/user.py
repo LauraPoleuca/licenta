@@ -1,5 +1,6 @@
 from data_access.models.base_model import BaseModel
 
+
 class User(BaseModel):
 
     def __init__(self, user_id: str, gender: str) -> None:

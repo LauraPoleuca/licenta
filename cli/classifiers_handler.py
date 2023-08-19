@@ -47,6 +47,7 @@ def get_input_models():
     input_models: List[InputModel] = data_access.generate_input_models()
     return input_models
 
+
 @yaspin.yaspin(text="Training...")
 def train_classifiers(classifier_tester: ClassifierTester, classifiers, input_models, state):
     classifier_tester.setup_tester(input_models, random_state=state)
@@ -59,4 +60,7 @@ def display_results(results):
     for key in results:
         formatted_values = list(map(lambda v: f"{v * 100:.3f}%", results[key]))
         displayed_data.append([key] + formatted_values)
-    print(tabulate.tabulate(displayed_data, headers=["Classifier", "Accuracy", "Precision", "Recall", "F1 score", "Balanced accuracy"], tablefmt=TABLE_FORMAT, colalign=("left", "right", "right", "right", "right", "right")))
+    print(
+        tabulate.tabulate(
+            displayed_data, headers=["Classifier", "Accuracy", "Precision", "Recall", "F1 score", "Balanced accuracy"],
+            tablefmt=TABLE_FORMAT, colalign=("left", "right", "right", "right", "right", "right")))

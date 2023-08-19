@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def get_signal_psd(signal, bandType: BandType) -> float:
+    # TODO: recheck these, remove comms if nothing will change
     # f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
     f, psd = scipy.signal.welch(signal, SAMPLING_RATE)
     # plt.figure()

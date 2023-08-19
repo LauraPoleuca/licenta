@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from classifiers.base_classifier import Classifier
 from classifiers.dependencies.classifier_data import ClassifierData
 from data_access.models.input_model import InputModel
-import numpy as np
+
 
 class ClassifierTester:
 
@@ -14,33 +14,22 @@ class ClassifierTester:
         self.test_data: List[InputModel] = []
         self.expected_outcomes: List[str] = []
 
-    def setup_tester(self, input_models: List[InputModel], random_state = 42):
-        # model_features = list(map(lambda input_model: input_model.get_feature_list(), input_models))
-        self.train_data, self.test_data = train_test_split(input_models, test_size = 0.2, random_state = random_state)
+    def setup_tester(self, input_models: List[InputModel], random_state=42):
+        self.train_data, self.test_data = train_test_split(input_models, test_size=0.2, random_state=random_state)
         # self.train_data, self.test_data = np.split(input_models, [int(0.8 * len(input_models))])
         self.train_data = list(self.train_data)
         self.test_data = list(self.test_data)
         self.expected_outcomes = list(map(lambda input_model: input_model.outcome, self.test_data))
 
-
-    # def test_classifiers(self, classifiers: List[Classifier]) -> dict:
-    #     self.train_classifiers(classifiers)
-    #     self.fill_classifier_data(classifiers)
-    #     results = {}
-    #     for classifier in classifiers:
-    #         results[classifier.name] = self.get_classifier_accuracy(classifier.name)
-    #     return results
-
     def get_classifiers_results(self, classifiers: List[Classifier]) -> dict:
         self.train_classifiers(classifiers)
         self.fill_classifier_evaluations(classifiers)
         results = {}
-        # for classifier in classifiers:
-        #     results[classifier.name] = self.get_classifier_accuracy(classifier.name)
         for classifier_name in self.classifier_data_dict:
-            results[classifier_name] = self.classifier_data_dict[classifier_name].calculate_metrics(self.expected_outcomes)
+            results[classifier_name] = self.classifier_data_dict[classifier_name].calculate_metrics(
+                self.expected_outcomes)
         return results
-        
+
     def train_classifiers(self, classifiers: List[Classifier]):
         for classifier in classifiers:
             classifier.train_classifier(self.train_data)

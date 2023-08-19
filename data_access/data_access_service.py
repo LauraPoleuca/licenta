@@ -4,10 +4,7 @@ from typing import List
 from data_access.models.input_model import InputModel
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
-from data_access.models.user import User
-
 import utils.database_constants as dbc
-from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, GAMMA_BAND_TYPE, BandType
 
 
 class DataAccessService:

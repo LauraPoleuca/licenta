@@ -7,10 +7,12 @@ import utils.signal_constants as signal_constants
 from utils.signal_constants import *
 
 
-def get_filter_polynomials(lowcut_frequency: float, highcut_frequency: float, sampling_frequency: int, filter_order: int) -> tuple:
+def get_filter_polynomials(
+        lowcut_frequency: float, highcut_frequency: float, sampling_frequency: int, filter_order: int) -> tuple:
     nyquist_frequency = 0.5 * sampling_frequency
     lowcut_nyquist = lowcut_frequency / nyquist_frequency
     highcut_nyquist = highcut_frequency / nyquist_frequency
+    # TODO: recheck this
     # numerator, denominator = signal.butter(
     #     filter_order, [lowcut_nyquist, highcut_nyquist], btype='bandpass')
     numerator, denominator = signal.cheby2(
@@ -25,7 +27,7 @@ def filter(eeg_signal: any, band: BandType) -> np.ndarray:
 
 
 def get_signal(username: str, file_name: str, channel_name: str) -> np.ndarray:
-#TODO: idk why this is still here it seems like it has no use
+    # TODO: idk why this is still here it seems like it has no use
     file_path = helper.get_relative_file_path(
         extraction_constants.USER_OUTPUT_DIRECTORY_NAME, username, file_name)
     channel_index = signal_constants.CHANNEL_INDEXES[channel_name] - 1
