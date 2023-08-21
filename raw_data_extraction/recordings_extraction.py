@@ -1,6 +1,7 @@
 import multiprocessing as mp
 import time
 from typing import List
+
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
 import raw_data_extraction.data_extraction_helper as helper
@@ -29,9 +30,7 @@ def optimized_get_user_trial_recordings(file_name, trial_index, channel_list) ->
     """
     file_content = helper.read_binary_file(file_name)[DATA]
     username = helper.get_username_from_file(file_name).lower()
-    # return get_user_trial_recordings(username, file_content, trial_index, channel_list)
-    return get_new_user_trial_recordings(username, file_content, trial_index, channel_list)
-
+    return get_user_trial_recordings(username, file_content, trial_index, channel_list)
 
 # def get_user_recordings(file_name, channel_list) -> List:
     # file_content = helper.read_binary_file(file_name)[DATA]
@@ -61,25 +60,25 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
     return recordings
 
 
-def get_new_user_trial_recordings(username, file_content, trial_index, channel_list) -> List:
-    """
+# def get_new_user_trial_recordings(username, file_content, trial_index, channel_list) -> List:
+#     """
 
-    """
-    print(f"Processing recordings for {username} - trial {trial_index}")
-    channel_signals = file_content[trial_index]
-    recordings = []
-    for channel in channel_list:
-        #!!! I think that the channel index might be wrong, as the values in the CHANNEL_INDEXES dict
-        # start at 1 (CHANNEL COUNT), but the data should be retreived using a CHANNEL INDEX
-        channel_index = CHANNEL_INDEXES[channel] - 1
-        raw_channel_signal = channel_signals[channel_index]
-        alpha_features = get_feature_list(raw_channel_signal, ALPHA_BAND_TYPE)
-        beta_features = get_feature_list(raw_channel_signal, BETA_BAND_TYPE)
-        alpha_recording = Recording(username, trial_index + 1, channel, ALPHA_BAND_TYPE.name, alpha_features)
-        beta_recording = Recording(username, trial_index + 1, channel, BETA_BAND_TYPE.name, beta_features)
-        recordings.append(alpha_recording)
-        recordings.append(beta_recording)
-    return recordings
+#     """
+#     print(f"Processing recordings for {username} - trial {trial_index}")
+#     channel_signals = file_content[trial_index]
+#     recordings = []
+#     for channel in channel_list:
+#         #!!! I think that the channel index might be wrong, as the values in the CHANNEL_INDEXES dict
+#         # start at 1 (CHANNEL COUNT), but the data should be retreived using a CHANNEL INDEX
+#         channel_index = CHANNEL_INDEXES[channel] - 1
+#         raw_channel_signal = channel_signals[channel_index]
+#         alpha_features = get_feature_list(raw_channel_signal, ALPHA_BAND_TYPE)
+#         beta_features = get_feature_list(raw_channel_signal, BETA_BAND_TYPE)
+#         alpha_recording = Recording(username, trial_index + 1, channel, ALPHA_BAND_TYPE.name, alpha_features)
+#         beta_recording = Recording(username, trial_index + 1, channel, BETA_BAND_TYPE.name, beta_features)
+#         recordings.append(alpha_recording)
+#         recordings.append(beta_recording)
+#     return recordings
 
 
 def get_feature_list(raw_signal, band_type: BandType) -> List:

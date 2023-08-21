@@ -4,6 +4,7 @@ from business_logic.csv_generation_service import CSVGenerationService
 from business_logic.database_generation_service import DatabaseGenerationService
 
 from cli.cli_constants import BooleanOptions, DataGenerationOptions
+from data_access.data_access_service import DataAccessService
 from raw_data_extraction.raw_data_processor import process_raw_data
 
 
