@@ -22,23 +22,15 @@ def handle_classifiers():
     gnb_classifier = GaussianNaiveBayesClasssifier()
 
     input_models = get_input_models()
-    for state in range(1000):
+    # TODO: pick a state and use it.
+    for state in range(1):
         print("state = ", state)
-        discretizer = Discretizer(10)
-        feature_names = []
-        # ch1-alpha-ae, ch1-alpha-se, ..., ch1-beta-ae, ...
-        for x in CHANNEL_INDEXES:
-            for y in ["alpha", "beta"]:
-                for z in ["ae", "se", "psd", "rms", "corr"]:
-                    feature_names.append(f"{x}-{y}-{z}")
-        nb_classifier = NaiveBayesClassifier(feature_names, ["happy", "sad"], discretizer)
-
+        nb_classifier = NaiveBayesClassifier.default()
         classifiers = [svm_classifier, nn_classifier, kmeans_classifier, gnb_classifier, nb_classifier]
         classifier_tester = ClassifierTester()
         results = train_classifiers(classifier_tester, classifiers, input_models, state)
         display_results(results)
-
-    pass
+        nb_classifier.store_trained_model()
 
 
 @yaspin.yaspin(text="Generating input models...")

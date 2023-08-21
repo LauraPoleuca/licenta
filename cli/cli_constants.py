@@ -11,6 +11,20 @@ class DataGenerationOptions:
     Database_Population = "Database population"
 
 
+class GraphingOptions:
+    Signal_Banding = "Signal Banding"
+    Naive_Bayes_Classifier_Histogram = "Naive Bayes Classifier Histogram"
+
+
+FEATURE_IDENTIFIERS = {
+    "Approximate entropy": "ae",
+    "Sample entropy": "se",
+    "Power spectral density": "psd",
+    "Root mean square": "rms",
+    "Autocorrelation": "corr"
+}
+
+
 class BooleanOptions:
     Yes = "Yes"
     No = "No"

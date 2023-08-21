@@ -9,6 +9,7 @@ from classifiers.dependencies.discretizer import Discretizer
 from data_access.models.input_model import InputModel
 from data_access.models.recording import Recording
 from utils.data_extraction_constants import TRAINED_MODEL_FILE
+from utils.signal_constants import CHANNEL_INDEXES
 
 
 class NaiveBayesClassifier(Classifier):
@@ -21,6 +22,18 @@ class NaiveBayesClassifier(Classifier):
         self.discretizer: Discretizer = discretizer
         self.train_data: dict = {}
         self.intervals: dict = {}
+
+    @classmethod
+    def default(cls):
+        discretizer = Discretizer(10)
+        feature_names = []
+        # ch1-alpha-ae, ch1-alpha-se, ..., ch1-beta-ae, ...
+        for x in CHANNEL_INDEXES:
+            for y in ["alpha", "beta"]:
+                for z in ["ae", "se", "psd", "rms", "corr"]:
+                    feature_names.append(f"{x}-{y}-{z}")
+        return cls(feature_names, ["happy", "sad"], discretizer)
+
 
     def train_classifier(self, input_models: List[InputModel]) -> None:
         """
@@ -75,7 +88,7 @@ class NaiveBayesClassifier(Classifier):
             for feature in serialized_model:
                 self.train_data[feature] = np.array([np.array(values_list)
                                                     for values_list in serialized_model[feature]])
-        print(self.train_data)
+        # print(self.train_data)
 
     def __get_classification_index(self, class_name: str) -> int:
         return 0 if class_name == "happy" else 1

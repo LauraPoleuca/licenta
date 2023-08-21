@@ -3,7 +3,6 @@ import time
 from typing import List
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
-from graphing.signal_plotter import plot_signal
 import raw_data_extraction.data_extraction_helper as helper
 import signal_processing.band_processing as band_processor
 import signal_processing.feature_processing as feature_processor
