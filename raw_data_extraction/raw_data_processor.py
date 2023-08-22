@@ -4,7 +4,6 @@ from typing import List
 
 import yaspin
 
-# TODO: change naming or drop the constants directly
 import utils.signal_constants as signal_constants
 import raw_data_extraction.data_extraction_helper as helper
 

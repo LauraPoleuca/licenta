@@ -18,10 +18,3 @@ class Classifier:
         predicts the outcome of the given InputModel
         """
         pass
-
-    # TODO: remove things below
-    def export_trained_model(self):
-        pass
-
-    def import_trained_model(self):
-        pass

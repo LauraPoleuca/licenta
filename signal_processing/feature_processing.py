@@ -10,27 +10,17 @@ def get_signal_psd(signal, bandType: BandType) -> float:
     # TODO: recheck these, remove comms if nothing will change
     # f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
     f, psd = scipy.signal.welch(signal, SAMPLING_RATE)
-    # plt.figure()
-    # plt.semilogy(f, psd, label=bandType.enum_type)
-    # plt.xlabel('Frequency (Hz)')
-    # plt.ylabel('Power Spectral Density')
-    # plt.legend()
-    # plt.grid(True)
-    # plt.show()
     scaled_low = int(bandType.low_frequency * 2)
     scaled_high = int(bandType.high_frequency * 2)
     return np.max(psd[scaled_low: scaled_high])
-    # return psd[scaled_low:scaled_high].max()
 
 def get_approximate_entropy(signal) -> float:
-    # r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
     r = 0.2 * np.std(sample)
     return approx_entropy(sample, 2, r)
 
 
 def get_sample_entropy(signal) -> float:
-    # r = 0.2 * np.std(signal)
     sample = extract_sample(signal)
     r = 0.2 * np.std(sample)
     return sampen(sample, 2, r)

@@ -14,15 +14,7 @@ svm_classifier = SVMClassifier()
 nn_classifier = NeuralNetwork()
 kmeans_classifier = KMeansClusterer()
 gnb_classifier = GaussianNaiveBayesClasssifier()
-
-discretizer = Discretizer(10)
-feature_names = []
-# ch1-alpha-ae, ch1-alpha-se, ..., ch1-beta-ae, ...
-for x in CHANNEL_INDEXES:
-    for y in ["alpha", "beta"]:
-        for z in ["ae", "se", "psd", "rms", "corr"]:
-            feature_names.append(f"{x}-{y}-{z}")
-nb_classifier = NaiveBayesClassifier(feature_names, ["happy", "sad"], discretizer)
+nb_classifier = NaiveBayesClassifier.default()
 
 classifiers = [svm_classifier, nn_classifier, kmeans_classifier, gnb_classifier, nb_classifier]
 classifier_tester = ClassifierTester()
@@ -36,6 +28,12 @@ classifier_tester.setup_tester(input_models)
 # results = classifier_tester.test_classifiers(classifiers)
 # for key in results:
 #     print(key, results[key])
+
+
+# because of the data split, some values are not used when calculating the intervals on the naive bayes classifier
+# Even if the intervals were set correctly, it would not matter because the training data would never fill the intervals,
+# therefore it would end up in a zero nonetheless
+# Say I could make like some form of workaround, moving to logarihmic calculations should improve the situation 
 
 results = classifier_tester.get_classifiers_results(classifiers)
 for key in results:

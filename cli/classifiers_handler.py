@@ -23,7 +23,7 @@ def handle_classifiers():
 
     input_models = get_input_models()
     # TODO: pick a state and use it.
-    for state in range(1):
+    for state in range(10):
         print("state = ", state)
         nb_classifier = NaiveBayesClassifier.default()
         classifiers = [svm_classifier, nn_classifier, kmeans_classifier, gnb_classifier, nb_classifier]

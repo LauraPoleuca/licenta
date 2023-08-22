@@ -22,18 +22,20 @@ class NaiveBayesClassifier(Classifier):
         self.discretizer: Discretizer = discretizer
         self.train_data: dict = {}
         self.intervals: dict = {}
+        self.model_count: int = 0
 
     @classmethod
     def default(cls):
+        """
+        A constructor for the classifier with some default values
+        """
         discretizer = Discretizer(10)
         feature_names = []
-        # ch1-alpha-ae, ch1-alpha-se, ..., ch1-beta-ae, ...
         for x in CHANNEL_INDEXES:
             for y in ["alpha", "beta"]:
                 for z in ["ae", "se", "psd", "rms", "corr"]:
                     feature_names.append(f"{x}-{y}-{z}")
         return cls(feature_names, ["happy", "sad"], discretizer)
-
 
     def train_classifier(self, input_models: List[InputModel]) -> None:
         """
@@ -44,6 +46,7 @@ class NaiveBayesClassifier(Classifier):
         """
         self.train_data = self.__initialize_frequency_dict()
         self.intervals = self.__get_dataset_features_intervals(input_models)
+        self.model_count = len(input_models)
         for data in input_models:
             # happy index 0, sad index 1
             class_index = self.__get_classification_index(data.outcome)
@@ -58,7 +61,6 @@ class NaiveBayesClassifier(Classifier):
                 bin_index = self.discretizer.get_bin_index(
                     feature_interval[0], feature_interval[1], feature_value)
                 self.train_data[feature_name][class_index, bin_index] += 1
-        # return self.train_data
 
     def predict(self, input_model: InputModel) -> List:
         """
@@ -88,7 +90,6 @@ class NaiveBayesClassifier(Classifier):
             for feature in serialized_model:
                 self.train_data[feature] = np.array([np.array(values_list)
                                                     for values_list in serialized_model[feature]])
-        # print(self.train_data)
 
     def __get_classification_index(self, class_name: str) -> int:
         return 0 if class_name == "happy" else 1
@@ -102,11 +103,11 @@ class NaiveBayesClassifier(Classifier):
         NOTE: temporary, if the class did not occur in the dataset, the probability is zero. 
         """
         class_index = self.__get_classification_index(ck)
+        class_likelyhood = None
         prob = 1.0
         for feature in self.features:
             class_likelyhood = np.sum(self.train_data[feature][class_index])
             feature_interval = self.intervals[feature]
-            # feature_value = features_model.__dict__[feature]
             args = feature.split("-")
             recording: Recording = list(
                 filter(
@@ -115,14 +116,10 @@ class NaiveBayesClassifier(Classifier):
             feature_value = recording.get_feature_value_by_name(args[2])
             bin_index = self.discretizer.get_bin_index(
                 feature_interval[0], feature_interval[1], feature_value)
-            if class_likelyhood == 0:
-                return 0  # temp solution until using log
-            # TEMPORARY SOLUTION, FIX THIS!!!!
             if bin_index > self.discretizer.bin_count:
                 return 0
-            prob *= (self.train_data[feature]
-                     [class_index, bin_index]) / class_likelyhood
-        return prob
+            prob *= self.train_data[feature][class_index, bin_index] / class_likelyhood
+        return prob * (class_likelyhood / self.model_count)
 
     def __get_dataset_features_intervals(self, dataset: List[InputModel]) -> dict:
         """
@@ -133,7 +130,6 @@ class NaiveBayesClassifier(Classifier):
         intervals: dict = {}
         for feature_name in self.features:
             args = feature_name.split("-")
-            index = 0
             feature_values = []
             for input_model in dataset:
                 recordings = input_model.recordings
