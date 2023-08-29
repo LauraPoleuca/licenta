@@ -1,7 +1,8 @@
 from typing import List
-import inquirer
-from cli.classifiers_handler import handle_classifiers
 
+import inquirer
+
+from cli.classifiers_handler import handle_classifier_result
 from cli.cli_constants import MenuOptions
 from cli.data_generation_handler import handle_data_generation
 from cli.database_preview_handlers import handle_database_preview
@@ -27,7 +28,7 @@ def handle_option(option: str) -> None:
         case MenuOptions.DATABASE_PREVIEW:
             handle_database_preview()
         case MenuOptions.CLASSIFIERS:
-            handle_classifiers()
+            handle_classifier_result()
         case _:
             pass
 
