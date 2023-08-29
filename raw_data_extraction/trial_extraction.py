@@ -9,9 +9,6 @@ def get_trials(quadrant_filtering: bool = False) -> List:
     creates a list with Trial type objects
     """
     files = helper.get_user_input_files()
-    # TODO: temporary use for debugging, remove this!
-    # files = ['s01.dat']
-    # files = ['s01.dat']
     return sum(map(lambda file_name: get_user_trials(quadrant_filtering, file_name), files), [])
 
 

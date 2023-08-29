@@ -22,8 +22,6 @@ def get_user_input_files() -> List:
     """
     return os.listdir(get_relative_file_path(USER_FILE_DIRECTORY_NAME))
 
-# this is gonna take a while
-
 
 def reset_output_folder() -> None:
     """
@@ -62,4 +60,4 @@ def read_binary_file(file_name: str) -> dict:
     reads a binary file
     """
     file_path = get_relative_file_path(USER_FILE_DIRECTORY_NAME, file_name)
-    return pk.load(open(file_path, BINARY_READ), encoding=LATIN_ENCODING)
+    return pk.load(open(file_path, BINARY_READ), encoding = LATIN_ENCODING)

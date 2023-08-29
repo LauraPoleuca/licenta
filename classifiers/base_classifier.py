@@ -3,7 +3,7 @@ from data_access.models.input_model import InputModel
 
 
 class Classifier:
-    
+
     def __init__(self) -> None:
         self.name = "Base classifier"
 
@@ -17,11 +17,4 @@ class Classifier:
         """
         predicts the outcome of the given InputModel
         """
-        pass
-
-    #TODO: remove things below
-    def export_trained_model(self):
-        pass
-
-    def import_trained_model(self):
         pass
