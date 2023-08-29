@@ -1,6 +1,6 @@
 from typing import List
+from halo import Halo
 import tabulate
-import yaspin
 
 from classifiers.classifier_tester import ClassifierTester
 from classifiers.dependencies.discretizer import Discretizer
@@ -23,7 +23,7 @@ def handle_classifiers():
 
     input_models = get_input_models()
     # TODO: pick a state and use it.
-    for state in range(10):
+    for state in range(1):
         print("state = ", state)
         nb_classifier = NaiveBayesClassifier.default()
         classifiers = [svm_classifier, nn_classifier, kmeans_classifier, gnb_classifier, nb_classifier]
@@ -33,14 +33,14 @@ def handle_classifiers():
         nb_classifier.store_trained_model()
 
 
-@yaspin.yaspin(text="Generating input models...")
+@Halo(text="Generating input models...")
 def get_input_models():
     data_access = DataAccessService()
     input_models: List[InputModel] = data_access.generate_input_models()
     return input_models
 
 
-@yaspin.yaspin(text="Training...")
+@Halo(text="Training...")
 def train_classifiers(classifier_tester: ClassifierTester, classifiers, input_models, state):
     classifier_tester.setup_tester(input_models, random_state=state)
     results = classifier_tester.get_classifiers_results(classifiers)

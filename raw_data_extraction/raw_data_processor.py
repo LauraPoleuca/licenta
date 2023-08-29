@@ -2,7 +2,7 @@ import csv
 from dataclasses import dataclass
 from typing import List
 
-import yaspin
+from halo import Halo
 
 import utils.signal_constants as signal_constants
 import raw_data_extraction.data_extraction_helper as helper
@@ -73,7 +73,7 @@ def process_raw_data() -> None:
     helper.reset_output_folder()
     for file in helper.get_user_input_files():
         trials = read_file(file, signal_constants.CHANNEL_INDEXES.keys())
-        with yaspin.yaspin(text=f"Processing file {file}") as sp:
+        with Halo(text=f"Processing file {file}") as sp:
             write_user_files(helper.get_username_from_file(file), trials)
             sp.write(f"File {file} finished processing successfully ✔")
 
