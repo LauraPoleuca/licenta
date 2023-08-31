@@ -16,7 +16,7 @@ def get_database_preview_options() -> List[str]:
 
 
 def handle_database_preview():
-    option = inquirer.list_input("Entity to preview", choices=get_database_preview_options())
+    option = inquirer.list_input("Alegeti entitatea de previzualizat", choices=get_database_preview_options())
     match option:
         case DatabasePreviewOptions.Users:
             handle_preview_users()

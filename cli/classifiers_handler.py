@@ -12,13 +12,13 @@ from data_access.models.input_model import InputModel
 def handle_classifier_result():
     input_models = get_input_models()
     results = []
-    with Halo(text="Training..."):
+    with Halo(text="Antrenare..."):
         classifier_service = ClassifierService()
         results = classifier_service.test_all_classifiers(input_models)
     display_results(results)
 
 
-@Halo(text="Generating input models...")
+@Halo(text="Generare modele pentru antrenare...")
 def get_input_models():
     data_access = DataAccessService()
     input_models: List[InputModel] = data_access.generate_input_models()
