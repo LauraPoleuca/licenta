@@ -11,34 +11,33 @@ from utils.signal_constants import CHANNEL_INDEXES
 
 class DatabaseGenerationService:
 
-    def __init__(self):
-        pass
-
-    def insert_users(self, data_access_service: DataAccessService) -> None:
+    def insert_users(self) -> None:
         """
         Description - what the method does
             - data_access_service: service responsible for inserting the data in the db
             - outputs: None
         """
         users = get_users()
-        data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_USERS, users)
+        self.data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_USERS, users)
 
-    def insert_trials(self, data_access_service: DataAccessService) -> None:
+    def insert_trials(self) -> None:
         trials = get_trials(quadrant_filtering=True)
-        data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_TRIALS, trials)
+        self.data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_TRIALS, trials)
 
-    def insert_recordings(self, data_access_service: DataAccessService) -> None:
-        trials = data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
+    def insert_recordings(self) -> None:
+        trials = self.data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
+        # trials = [Trial('s01', 1, 0, 0, 1), Trial('s01', 2, 0, 0, 1)]
         recordings = get_recordings_multiprocessing(list(CHANNEL_INDEXES.keys()), trials)
-        data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
+        # recordings = get_recordings_multiprocessing(['Fp1'], trials)
+        self.data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
 
     def populate_database(self):
         start = time.time()
         os.remove(dbc.DATABASE_PATH)
-        data_access_service = DataAccessService()
-        data_access_service.initialize_database()
-        self.insert_users(data_access_service)
-        self.insert_trials(data_access_service)
-        self.insert_recordings(data_access_service)
+        self.data_access_service = DataAccessService()
+        self.data_access_service.initialize_database()
+        self.insert_users()
+        self.insert_trials()
+        self.insert_recordings()
         end = time.time()
         print(f"Executia a durat {end - start} secunde")

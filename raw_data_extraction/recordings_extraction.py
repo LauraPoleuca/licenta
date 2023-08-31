@@ -45,9 +45,10 @@ def get_user_trial_recordings(username, file_content, trial_index, channel_list)
         raw_channel_signal = channel_signals[channel_index]
         alpha_features = get_feature_list(raw_channel_signal, ALPHA_BAND_TYPE)
         beta_features = get_feature_list(raw_channel_signal, BETA_BAND_TYPE)
-        gamma_features = get_feature_list(raw_channel_signal, GAMMA_BAND_TYPE)
-        recording = Recording(channel, username, trial_index + 1, alpha_features, beta_features, gamma_features)
-        recordings.append(recording)
+        alpha_recording = Recording(username, trial_index + 1, channel, ALPHA_BAND_TYPE.name, alpha_features)
+        beta_recording = Recording(username, trial_index + 1, channel, BETA_BAND_TYPE.name, beta_features)
+        recordings.append(alpha_recording)
+        recordings.append(beta_recording)
     return recordings
 
 
