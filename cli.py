@@ -35,11 +35,11 @@ def handle_option(option: str) -> None:
 
 def main():
     while True:
-        option = inquirer.list_input("Option", choices=get_menu_options())
+        option = inquirer.list_input("Optiune", choices=get_menu_options())
         handle_option(option)
         if option == MenuOptions.EXIT:
             break
-    print("Ending program")
+    print("Sfarsit program")
 
 
 if __name__ == "__main__":

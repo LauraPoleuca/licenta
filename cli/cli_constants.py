@@ -1,19 +1,19 @@
 class MenuOptions:
-    DATA_GENERATION: str = "Data generation"
-    GRAPHICS: str = "Graphics"
-    DATABASE_PREVIEW: str = "Database preview"
-    CLASSIFIERS: str = "Classifiers"
-    EXIT: str = "Exit"
+    DATA_GENERATION: str = "Generare date"
+    GRAPHICS: str = "Reprezentare grafica"
+    DATABASE_PREVIEW: str = "Previzualizare baza de date"
+    CLASSIFIERS: str = "Clasificatori"
+    EXIT: str = "Iesire"
 
 
 class DataGenerationOptions:
-    CSV_Generation = "CSV Generation"
-    Database_Population = "Database population"
+    CSV_Generation = "Generare fisiere .csv"
+    Database_Population = "Populare baza de date"
 
 
 class GraphingOptions:
-    Signal_Banding = "Signal Banding"
-    Naive_Bayes_Classifier_Histogram = "Naive Bayes Classifier Histogram"
+    Signal_Banding = "Reprezentare grafica semnal si benzi de frecventa"
+    Naive_Bayes_Classifier_Histogram = "Histograma"
 
 
 FEATURE_IDENTIFIERS = {
@@ -26,8 +26,8 @@ FEATURE_IDENTIFIERS = {
 
 
 class BooleanOptions:
-    Yes = "Yes"
-    No = "No"
+    Yes = "Da"
+    No = "Nu"
 
 
 class DatabasePreviewOptions:

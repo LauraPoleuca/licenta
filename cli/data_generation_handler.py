@@ -14,7 +14,7 @@ def get_data_generation_options() -> List[str]:
 
 
 def handle_data_generation() -> None:
-    option = inquirer.list_input("Option", choices=get_data_generation_options())
+    option = inquirer.list_input("Optiune", choices=get_data_generation_options())
     match option:
         case DataGenerationOptions.CSV_Generation:
             handle_dat_to_csv_conversion()
@@ -23,15 +23,15 @@ def handle_data_generation() -> None:
 
 
 def handle_dat_to_csv_conversion():
-    if get_permission("Are you sure? This will delete the already existent .csv user files"):
+    if get_permission("Sunteti sigur? Aceasta actiune va sterge fisierele .csv existente"):
         CSVGenerationService().generate_csv_files()
 
 
 def handle_database_generation():
-    if get_permission("Are you sure? This will delete the already existent database"):
+    if get_permission("Sunteti sigur? Aceasta actiune va sterge baza de date deja existenta"):
         DatabaseGenerationService().populate_database()
 
 
-def get_permission(msg: str = "Are you sure?") -> True:
+def get_permission(msg: str = "Sunteti sigur?") -> True:
     option = inquirer.list_input(msg, choices=[BooleanOptions.Yes, BooleanOptions.No])
     return option == BooleanOptions.Yes
