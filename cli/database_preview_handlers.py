@@ -3,7 +3,7 @@ from typing import List
 import inquirer
 import tabulate
 
-from business_logic.data_extraction import DataExtractionService
+from business_logic.data_extraction_service import DataExtractionService
 from cli.cli_constants import TABLE_FORMAT, DatabasePreviewOptions
 
 

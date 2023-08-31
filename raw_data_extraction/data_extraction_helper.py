@@ -28,7 +28,8 @@ def reset_output_folder() -> None:
     recursively removes the content from output folder and creates a new empty one
     """
     output_file_path = get_relative_file_path(USER_OUTPUT_DIRECTORY_NAME)
-    shutil.rmtree(output_file_path)
+    if os.path.exists(output_file_path):
+        shutil.rmtree(output_file_path)
     os.mkdir(output_file_path)
 
 
@@ -60,4 +61,4 @@ def read_binary_file(file_name: str) -> dict:
     reads a binary file
     """
     file_path = get_relative_file_path(USER_FILE_DIRECTORY_NAME, file_name)
-    return pk.load(open(file_path, BINARY_READ), encoding = LATIN_ENCODING)
+    return pk.load(open(file_path, BINARY_READ), encoding=LATIN_ENCODING)

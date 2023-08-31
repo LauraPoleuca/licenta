@@ -41,6 +41,7 @@ def read_file(file_name: str, channels: list[str]) -> List:
         trial_list.append(trial)
     return trial_list
 
+
 def write_user_files(user: str, trial_data_list: list[TrialData]) -> None:
     """
     creates a folder with the given user name and creates .csv files with the data from the given TrialData list
@@ -75,7 +76,7 @@ def process_raw_data() -> None:
         trials = read_file(file, signal_constants.CHANNEL_INDEXES.keys())
         with Halo(text=f"Processing file {file}") as sp:
             write_user_files(helper.get_username_from_file(file), trials)
-            sp.write(f"File {file} finished processing successfully ✔")
+            sp.succeed(f"File {file} finished processing successfully ✔")
 
 
 if __name__ == '__main__':
