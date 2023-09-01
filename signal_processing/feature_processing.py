@@ -3,7 +3,6 @@ import scipy
 import numpy as np
 from utils.signal_constants import SAMPLING_HIGHER_BOUND, SAMPLING_LOWER_BOUND, SAMPLING_RATE, BandType
 import statsmodels.api as sm
-import matplotlib.pyplot as plt 
 
 
 def get_signal_psd(signal, bandType: BandType) -> float:
@@ -13,6 +12,7 @@ def get_signal_psd(signal, bandType: BandType) -> float:
     scaled_low = int(bandType.low_frequency * 2)
     scaled_high = int(bandType.high_frequency * 2)
     return np.max(psd[scaled_low: scaled_high])
+
 
 def get_approximate_entropy(signal) -> float:
     sample = extract_sample(signal)
@@ -47,6 +47,7 @@ def get_autocorrelation(signal) -> float:
     return np.average(autocorr)
     # autocorr = sm.tsa.acf(signal, nlags = len(signal)-1)
     # return np.average(autocorr)
+
 
 def approx_entropy(signal, m, r) -> float:
 
