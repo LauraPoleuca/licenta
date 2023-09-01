@@ -18,7 +18,8 @@ def plot_histograms(channel, feature, band, histogram_values, feature_interval):
     subplot_histogram(ticks, labels, happy_data, max_value, True)
     subplot_histogram(ticks, labels, sad_data, max_value, False)
 
-    plt.suptitle(f'Histograms of the {feature} measured for channel {channel} ({band} banded signal)')
+    plt.suptitle(
+        f'Histograma pentru caracteristica {feature} masurata pe canalul {channel} (semnal filtrat pe banda {band})')
     plt.show()
 
 
@@ -30,8 +31,8 @@ def subplot_histogram(ticks, labels, values, max_value, is_happy):
     curve_x = range(len(values))
     curve_y = values
     plt.plot(curve_x, curve_y, marker='o', color='red')
-    plt.xlabel('Intervals')
-    plt.ylabel('Data count')
-    plt.title('Happy data histogram' if is_happy else 'Sad data histogram')
+    plt.xlabel('Intervale')
+    plt.ylabel('Numar valori')
+    plt.title('Histograma pentru date pozitive' if is_happy else 'Histograma pentru date negative')
     plt.xticks(rotation=30)
     plt.ylim(0, max_value)  # Set y-axis limits

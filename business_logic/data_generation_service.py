@@ -1,6 +1,7 @@
 import os
 import time
 from data_access.models.trial import Trial
+from raw_data_extraction.raw_data_processor import process_raw_data
 from raw_data_extraction.recordings_extraction import get_recordings_multiprocessing
 from raw_data_extraction.trial_extraction import get_trials
 import utils.database_constants as dbc
@@ -9,7 +10,7 @@ from data_access.data_access_service import DataAccessService
 from utils.signal_constants import CHANNEL_INDEXES
 
 
-class DatabaseGenerationService:
+class DataGenerationService:
 
     def insert_users(self) -> None:
         """
@@ -26,10 +27,11 @@ class DatabaseGenerationService:
 
     def insert_recordings(self) -> None:
         trials = self.data_access_service.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
-        # trials = [Trial('s01', 1, 0, 0, 1), Trial('s01', 2, 0, 0, 1)]
         recordings = get_recordings_multiprocessing(list(CHANNEL_INDEXES.keys()), trials)
-        # recordings = get_recordings_multiprocessing(['Fp1'], trials)
         self.data_access_service.insert_range_data(dbc.INSERT_RANGE_TABLE_RECORDINGS, recordings)
+
+    def generate_csv_files(self):
+        process_raw_data()
 
     def populate_database(self):
         start = time.time()

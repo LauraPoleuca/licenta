@@ -11,6 +11,7 @@ class ClassifierData:
         self.classifier_name: str = classifier_name
     
     def calculate_metrics(self, expected_outcomes) -> List[float]:
+        self.__reset_confusion_matrix()
         self.calculate_confusion_matrix(expected_outcomes)
         return [
             self.__calculate_accuracy(),
@@ -54,3 +55,9 @@ class ClassifierData:
         recall = self.__calculate_recall()
         specificity = self.__calculate_specificity()
         return (recall + specificity) / 2
+    
+    def __reset_confusion_matrix(self):
+        self.false_negatives = 0
+        self.false_positives = 0
+        self.true_negatives = 0
+        self.true_positives = 0
