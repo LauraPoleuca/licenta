@@ -6,8 +6,8 @@ from data_access.models.recording import Recording
 class InputModel:
     """
     Represents the new input model. It essentially contains all the recordings associated with a trial
-    (one newInputModel per user_id-trial_id), as well as the outcome of the trial. There are 20 x 2 recordings expected
-    in the current siutuation but maybe that will change. 
+    (one input model per user_id - trial_id), as well as the outcome of the trial. 
+    There are 20 x 2 recordings expected per model 
     """
 
     def __init__(self, recordings: List[Recording], outcome: str) -> None:
@@ -16,7 +16,7 @@ class InputModel:
 
     def get_feature_list(self) -> List[float]:
         """
-        Compiles all the features from all recordings into a single list that can be used for the actual training of the classifiers
+        Compiles all features from all recordings into a single list that can be used for the classification process
         """
         features: List[float] = []
         for rec in self.recordings:

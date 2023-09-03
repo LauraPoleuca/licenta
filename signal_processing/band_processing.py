@@ -9,9 +9,6 @@ def get_filter_polynomials(
     nyquist_frequency = 0.5 * sampling_frequency
     lowcut_nyquist = lowcut_frequency / nyquist_frequency
     highcut_nyquist = highcut_frequency / nyquist_frequency
-    # TODO: recheck this
-    # numerator, denominator = signal.butter(
-    #     filter_order, [lowcut_nyquist, highcut_nyquist], btype='bandpass')
     numerator, denominator = signal.cheby2(
         filter_order, 3, [lowcut_nyquist, highcut_nyquist], btype='bandpass')
     return numerator, denominator

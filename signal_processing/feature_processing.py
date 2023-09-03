@@ -6,9 +6,7 @@ import statsmodels.api as sm
 
 
 def get_signal_psd(signal, bandType: BandType) -> float:
-    # TODO: recheck these, remove comms if nothing will change
-    # f, psd = scipy.signal.welch(signal, fs=SAMPLING_RATE, scaling='spectrum')
-    f, psd = scipy.signal.welch(signal, SAMPLING_RATE)
+    f, psd = scipy.signal.welch(signal, SAMPLING_RATE, scaling='spectrum')
     scaled_low = int(bandType.low_frequency * 2)
     scaled_high = int(bandType.high_frequency * 2)
     return np.max(psd[scaled_low: scaled_high])
@@ -28,25 +26,11 @@ def get_sample_entropy(signal) -> float:
 
 def get_root_mean_square(signal) -> float:
     return np.sqrt(np.mean([x ** 2 for x in signal]))
-    # _, psd = scipy.signal.welch(signal, SAMPLING_RATE, scaling='spectrum')
-    # rms_amplitude = np.sqrt(psd.max()) # peak hight din power spectrum
-    # return rms_amplitude
 
 
 def get_autocorrelation(signal) -> float:
-    # data = np.array(signal)
-    # mean = np.mean(data)
-    # variance = np.var(data)
-    # normalized_data = data - mean
-    # acorr = np.correlate(normalized_data, normalized_data, 'full')[len(normalized_data)-1:]
-    # return np.average(acorr / variance / len(normalized_data))
-
-    # autocorr = np.correlate(signal, signal, mode='full')
-    # autocorr /= np.max(autocorr)
     autocorr = sm.tsa.acf(signal)
     return np.average(autocorr)
-    # autocorr = sm.tsa.acf(signal, nlags = len(signal)-1)
-    # return np.average(autocorr)
 
 
 def approx_entropy(signal, m, r) -> float:

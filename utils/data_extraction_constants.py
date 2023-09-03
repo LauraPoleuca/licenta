@@ -5,3 +5,5 @@ LATIN_ENCODING = "latin1"
 LABELS = 'labels'
 DATA = 'data'
 TRAINED_MODEL_FILE = 'model.json'
+QUESTIONAIRE_NAME = 'participant_questionnaire.ods'
+QUESTIONAIRE_SHEET = 'Sheet1'

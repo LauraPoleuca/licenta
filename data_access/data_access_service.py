@@ -1,6 +1,7 @@
 import sqlite3
 import os
-from typing import List
+from typing import List, Tuple
+from data_access.models.base_model import BaseModel
 from data_access.models.input_model import InputModel
 from data_access.models.recording import Recording
 from data_access.models.trial import Trial
@@ -12,12 +13,15 @@ class DataAccessService:
     db_connection: sqlite3.Connection
 
     def __init__(self) -> None:
+        """
+        Connects to the database file and enables the foreign keys constraints
+        """
         self.db_connection = sqlite3.connect(dbc.DATABASE_PATH)
         self.db_connection.execute(dbc.FOREIGN_KEYS_ENABLED)
 
     def initialize_database(self) -> None:
         """
-        creates the tables in db
+        Creates the tables in the database
         """
         cursor = self.db_connection.cursor()
         cursor.execute(dbc.CREATE_USER_TABLE_SCRIPT)
@@ -27,7 +31,7 @@ class DataAccessService:
 
     def insert_range_data(self, insert_script, entities) -> None:
         """
-        inserts data in db
+        Inserts the given entities in the database using by executing the given insert script
         """
         cursor = self.db_connection.cursor()
         entities_data = self.__get_entities_tuple(entities)
@@ -37,14 +41,12 @@ class DataAccessService:
 
     def retrieve_range_data(self, select_script, entity_class) -> List:
         """
-        retrieves data from db
-            - inputs: sql select query, model type that needs to be extracted from the db
-            - outputs: list of objects of entity_class type
+        Executes the given select script and maps the returned results into the entity_class objects
         """
         cursor = self.db_connection.cursor()
         cursor.execute(select_script)
         entity_tuples = cursor.fetchall()
-        return list(map(lambda entity_tuple: entity_class.from_entity_tuple(entity_tuple), entity_tuples))
+        return self.__get_entities_from_tuples(entity_tuples, entity_class)
 
     def clear_database(self) -> None:
         """
@@ -71,10 +73,14 @@ class DataAccessService:
             input_models.append(input_model)
         return input_models
 
-    def __get_entities_tuple(self, entities) -> List:
+    def __get_entities_tuple(self, entities: List[BaseModel]) -> List[Tuple]:
         """
-        returns a list of tuples for the given entities
-            - inputs: list of entities 
-            - outputs: list of tuples
+        Returns a list of tuples for the given entities
         """
         return list(map(lambda x: x.get_tuple(), entities))
+
+    def __get_entities_from_tuples(self, entity_tuples: List[Tuple], entity_class) -> List[BaseModel]:
+        """
+        Returns a list of entities of type entity_class from the given list of tuples 
+        """
+        return list(map(lambda entity_tuple: entity_class.from_entity_tuple(entity_tuple), entity_tuples))

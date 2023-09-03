@@ -8,7 +8,7 @@ import raw_data_extraction.data_extraction_helper as helper
 import signal_processing.band_processing as band_processor
 import signal_processing.feature_processing as feature_processor
 from utils.data_extraction_constants import DATA
-from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, CHANNEL_INDEXES, GAMMA_BAND_TYPE, BandType
+from utils.signal_constants import ALPHA_BAND_TYPE, BETA_BAND_TYPE, CHANNEL_INDEXES, BandType
 
 
 def get_recordings_multiprocessing(channel_list, trial_list) -> List:

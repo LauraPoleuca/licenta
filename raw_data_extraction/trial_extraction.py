@@ -28,7 +28,7 @@ def get_user_trials(quadrant_filtering: bool, file_name: str) -> List:
 
 def get_user_trial_quadrant(valence: float, arousal: float) -> int:
     """
-    based on the values of valence and arousal, places the trial in a quadrant
+    Returns the quadrant for a Trial based on the values of valence and arousal
     """
     threshold_value = 4.5
     is_valence_high = valence > threshold_value
