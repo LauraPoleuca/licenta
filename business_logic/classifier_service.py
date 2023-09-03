@@ -8,6 +8,9 @@ from classifiers.svm_classifier import SVMClassifier
 
 class ClassifierService:
 
+    def __init__(self) -> None:
+        self.classifier_tester = ClassifierTester()
+
     def test_all_classifiers(self, input_models):
         svm_classifier = SVMClassifier()
         nn_classifier = NeuralNetwork()
@@ -16,13 +19,12 @@ class ClassifierService:
         nb_classifier = NaiveBayesClassifier.default()
         classifiers = [svm_classifier, nn_classifier, kmeans_classifier, gnb_classifier, nb_classifier]
 
-        classifier_tester = ClassifierTester()
-        results = self.train_classifiers(classifier_tester, classifiers, input_models, 0)
+        results = self.train_classifiers(classifiers, input_models, 0)
         nb_classifier.store_trained_model()
 
         return results
 
-    def train_classifiers(self, classifier_tester: ClassifierTester, classifiers, input_models, state):
-        classifier_tester.setup_tester(input_models, random_state=state)
-        results = classifier_tester.get_classifiers_results(classifiers)
+    def train_classifiers(self, classifiers, input_models, state):
+        self.classifier_tester.setup_tester(input_models, random_state=state)
+        results = self.classifier_tester.get_classifiers_results(classifiers)
         return results

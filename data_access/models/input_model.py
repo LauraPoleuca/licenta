@@ -22,3 +22,12 @@ class InputModel:
         for rec in self.recordings:
             features += rec.features
         return features
+
+    def get_feature_value_by_name(self, feature_name) -> float:
+        channel_id, band_type, feature = feature_name.split("-")
+        recording: Recording = list(
+            filter(
+                lambda r: r.channel_id == channel_id and r.band_type == band_type,
+                self.recordings))[0]
+        feature_value = recording.get_feature_value_by_name(feature)
+        return feature_value

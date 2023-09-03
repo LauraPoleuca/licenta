@@ -51,13 +51,8 @@ class NaiveBayesClassifier(Classifier):
             # happy index 0, sad index 1
             class_index = self.__get_classification_index(data.outcome)
             for feature_name in self.features:
-                args = feature_name.split("-")
                 feature_interval = self.intervals[feature_name]
-                recording: Recording = list(
-                    filter(
-                        lambda r: r.channel_id == args[0] and r.band_type == args[1],
-                        data.recordings))[0]
-                feature_value = recording.get_feature_value_by_name(args[2])
+                feature_value = data.get_feature_value_by_name(feature_name)
                 bin_index = self.discretizer.get_bin_index(
                     feature_interval[0], feature_interval[1], feature_value)
                 self.train_data[feature_name][class_index, bin_index] += 1
@@ -108,12 +103,7 @@ class NaiveBayesClassifier(Classifier):
         for feature in self.features:
             class_likelyhood = np.sum(self.train_data[feature][class_index])
             feature_interval = self.intervals[feature]
-            args = feature.split("-")
-            recording: Recording = list(
-                filter(
-                    lambda r: r.channel_id == args[0] and r.band_type == args[1],
-                    features_model.recordings))[0]
-            feature_value = recording.get_feature_value_by_name(args[2])
+            feature_value = features_model.get_feature_value_by_name(feature)
             bin_index = self.discretizer.get_bin_index(
                 feature_interval[0], feature_interval[1], feature_value)
             if bin_index > self.discretizer.bin_count:

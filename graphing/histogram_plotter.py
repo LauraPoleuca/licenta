@@ -19,7 +19,7 @@ def plot_histograms(channel, feature, band, histogram_values, feature_interval):
     subplot_histogram(ticks, labels, sad_data, max_value, False)
 
     plt.suptitle(
-        f'Histograma pentru caracteristica {feature} masurata pe canalul {channel} (semnal filtrat pe banda {band})')
+        f'Histograme pentru trasatura {feature} masurata pe canalul {channel} (semnal filtrat pe banda {band})')
     plt.show()
 
 
