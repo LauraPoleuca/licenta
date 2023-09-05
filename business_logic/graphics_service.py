@@ -24,12 +24,13 @@ class GraphicsService:
 
         alpha_banded_signal = band_processor.filter(raw_channel_signal, ALPHA_BAND_TYPE)
         beta_banded_signal = band_processor.filter(raw_channel_signal, BETA_BAND_TYPE)
-        gamma_banded_signal = band_processor.filter(raw_channel_signal, GAMMA_BAND_TYPE)
+        # gamma_banded_signal = band_processor.filter(raw_channel_signal, GAMMA_BAND_TYPE)
 
         plot_signal(alpha_banded_signal, ALPHA_BAND_TYPE, username, trial_index, channel)
         plot_signal(beta_banded_signal, BETA_BAND_TYPE, username, trial_index, channel)
-        plot_signal(gamma_banded_signal, GAMMA_BAND_TYPE, username, trial_index, channel)
-        plot_comparison(['alpha', 'beta', 'gamma'], [alpha_banded_signal, beta_banded_signal, gamma_banded_signal])
+        # plot_signal(gamma_banded_signal, GAMMA_BAND_TYPE, username, trial_index, channel)
+        # plot_comparison(['alpha', 'beta', 'gamma'], [alpha_banded_signal, beta_banded_signal, gamma_banded_signal])
+        plot_comparison(['alpha', 'beta'], [alpha_banded_signal, beta_banded_signal])
 
     def display_nbc_histogram(self, channel_option: str, feature_option: str, band_option: str,
                               input_models: List[InputModel]):
