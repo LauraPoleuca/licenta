@@ -57,9 +57,7 @@ class DataAccessService:
 
     def generate_input_models(self) -> List:
         """
-        generates InputModel objects using the data from db
-            - inputs: None
-            - outputs: list of objects of NewInputModel type
+        Generates InputModel objects using the data from db
         """
         trials = self.retrieve_range_data(dbc.SELECT_TRIALS, Trial)
         recordings = self.retrieve_range_data(dbc.SELECT_RECORDINGS, Recording)

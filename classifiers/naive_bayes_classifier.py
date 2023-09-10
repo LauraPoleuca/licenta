@@ -41,7 +41,7 @@ class NaiveBayesClassifier(Classifier):
         """
         Create a new frequency dictionary for all the features.
         For each data input in the dataset, pick up each of the features, determine the appropriate indexes for the bin
-        and the class, and increase that. 
+        and the class, and increase the value at these indexes. 
         Save this to the train_data property
         """
         self.train_data = self.__initialize_frequency_dict()
@@ -113,9 +113,7 @@ class NaiveBayesClassifier(Classifier):
 
     def __get_dataset_features_intervals(self, dataset: List[InputModel]) -> dict:
         """
-        Make a dict with all of the self.features as names and the intervals (currently as tuples)
-        NOTE: this only works IF the features are set accordingly. Maybe there is a simpler implementation
-        but this will do for now.
+        Makes a dict with all of the self.features as names and the intervals (currently as tuples)
         """
         intervals: dict = {}
         for feature_name in self.features:
